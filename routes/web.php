@@ -15,9 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
+Route::middleware(['guest:student'])->group(function () {
+    Route::get('/', function () {
+        return view('auth.login');
+    })->name('login');
+
+    Route::post('/processlogin', [AuthController::class, 'processlogin']);
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::post('/processlogin', [AuthController::class, 'processlogin']);
+Route::middleware(['auth:student'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    Route::get('/processlogout', [AuthController::class, 'processLogout']);
+});
