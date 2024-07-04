@@ -40,13 +40,13 @@
     </div>
     <div class="row">
         <div class="col">
-            <button class="btn btn-primary btn-block">
+            <button id="takeattendance" class="btn btn-primary btn-block">
                 <ion-icon name="camera-outline"></ion-icon>
                 Absen Masuk
             </button>
         </div>
     </div>
-    <div class="row mt2">
+    <div class="row mt-2">
         <div class="col">
             <div id="map"></div>
         </div>
@@ -84,13 +84,42 @@
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
         }
 
-        // const location = document.getElementById('location');
-        // if (navigator.geolocation) {
-        //     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-        // }
+        $('#takeattendance').click(function(e) {
+            Webcam.snap(function(uri) {
+                image = uri;
+            })
+            var loc = $('#location').val();
+            console.log('image: ', image)
+            console.log('loc: ', loc)
 
-        // function successCallback(position) {
-        //     location.value = position.coords.latitude;
-        // }
+            $.ajax({
+                type: 'POST',
+                url: '/attendance/store',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    image: image,
+                    lokasi: loc
+                },
+                cache: false,
+                success: function(res) {
+                    if (res == 0) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Matursuwon!',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        })
+                        setTimeout("location.href='/dashboard'", 3000);
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Gagal Absen!',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        })
+                    }
+                }
+            })
+        })
     </script>
 @endpush

@@ -28,4 +28,5 @@ Route::middleware(['auth:student'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/processlogout', [AuthController::class, 'processLogout']);
     Route::get('/attendance/create', [AttendanceController::class, 'create']);
+    Route::post('/attendance/store', [AttendanceController::class, 'store']);
 });
