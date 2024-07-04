@@ -40,10 +40,17 @@
     </div>
     <div class="row">
         <div class="col">
-            <button id="takeattendance" class="btn btn-primary btn-block">
-                <ion-icon name="camera-outline"></ion-icon>
-                Absen Masuk
-            </button>
+            @if ($check > 0)
+                <button id="takeattendance" class="btn btn-danger btn-block">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    Absen Pulang
+                </button>
+            @else
+                <button id="takeattendance" class="btn btn-primary btn-block">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    Absen Masuk
+                </button>
+            @endif
         </div>
     </div>
     <div class="row mt-2">
@@ -102,10 +109,11 @@
                 },
                 cache: false,
                 success: function(res) {
-                    if (res == 0) {
+                    var status = res.split("|");
+                    if (status[0] == "success") {
                         Swal.fire({
                             title: 'Success!',
-                            text: 'Matursuwon!',
+                            text: status[1],
                             icon: 'success',
                             confirmButtonText: 'OK'
                         })

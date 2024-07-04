@@ -14,7 +14,10 @@ class AttendanceController extends Controller
 {
     public function create()
     {
-        return view('attendance.create');
+        $daynow = date('Y-m-d');
+        $student_id = Auth::guard('student')->user()->id;
+        $check = DB::table('attendances')->where('date', $daynow)->where('student_id', $student_id)->count();
+        return view('attendance.create', compact('check'));
     }
 
     public function store(Request $request)
@@ -32,20 +35,38 @@ class AttendanceController extends Controller
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
         $file = $folderPath . $fileName;
-        $data = [
-            'student_id' => $student_id,
-            'date' => $date,
-            'time_in' => $time,
-            'photo_in' => $fileName,
-            'location_in' => $location
-        ];
+
         // Attendance::create($data);
-        $save = DB::table('attendances')->insert($data);
-        if ($save) {
-            echo 0;
-            Storage::put($file, $image_base64);
+        $check = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->count();
+        if ($check > 0) {
+            $data_pulang = [
+                'time_out' => $time,
+                'photo_out' => $fileName,
+                'location_out' => $location
+            ];
+            $update = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->update($data_pulang);
+            if ($update) {
+                echo 'success|Terimakasih, hati-hati dijalan|out';
+                Storage::put($file, $image_base64);
+            } else {
+                echo 'error|Gagal Absensi!|out';
+            }
         } else {
-            echo 1;
+            $data = [
+                'student_id' => $student_id,
+                'date' => $date,
+                'time_in' => $time,
+                'photo_in' => $fileName,
+                'location_in' => $location
+            ];
+
+            $save = DB::table('attendances')->insert($data);
+            if ($save) {
+                echo 'success|Terimakasih, Selamat Bekerja|in';
+                Storage::put($file, $image_base64);
+            } else {
+                echo 'error|Gagal Absensi!|in';
+            }
         }
     }
 }
