@@ -16,10 +16,11 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained();
             $table->date('date');
             $table->time('time_in');
-            $table->time('time_out');
+            $table->time('time_out')->nullable();
             $table->string('photo_in');
-            $table->string('photo_out');
-            $table->text('location');
+            $table->string('photo_out')->nullable();
+            $table->text('location_in');
+            $table->text('location_out')->nullable();
             $table->timestamps();
         });
     }
