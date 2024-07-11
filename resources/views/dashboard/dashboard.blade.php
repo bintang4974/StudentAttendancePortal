@@ -73,7 +73,7 @@
                                         @php
                                             $path = Storage::url('uploads/absensi/' . $attendanceToday->photo_in);
                                         @endphp
-                                        <img src="{{ url($path) }}" class="imaged w64">
+                                        <img src="{{ url($path) }}" class="imaged w48">
                                     @else
                                         <ion-icon name="camera"></ion-icon>
                                     @endif
@@ -95,7 +95,7 @@
                                         @php
                                             $path = Storage::url('uploads/absensi/' . $attendanceToday->photo_out);
                                         @endphp
-                                        <img src="{{ url($path) }}" class="imaged w64">
+                                        <img src="{{ url($path) }}" class="imaged w48">
                                     @else
                                         <ion-icon name="camera"></ion-icon>
                                     @endif
@@ -111,6 +111,61 @@
             </div>
         </div>
 
+        <div id="recappresence">
+            <h3>Rekap Presensi Bulan {{ $nameMonth[$thisMonth] }} Tahun {{ $thisYear }}</h3>
+            <div class="row">
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 12px 12px !important; line-height: 0.8rem">
+                            <div class="badge badge-danger"
+                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:1;">
+                                10</div>
+                            <ion-icon name="accessibility-outline" style="font-size: 1.6rem"
+                                class="text-primary mb-1"></ion-icon>
+                            <br>
+                            <span style="font-size: 0.8rem; font-weight: 500">Hadir</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 12px 12px !important; line-height: 0.8rem">
+                            <div class="badge badge-danger"
+                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:1;">
+                                10</div>
+                            <ion-icon name="newspaper-outline" style="font-size: 1.6rem"
+                                class="text-warning mb-1"></ion-icon>
+                            <br>
+                            <span style="font-size: 0.8rem; font-weight: 500">Izin</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 12px 12px !important; line-height: 0.8rem">
+                            <div class="badge badge-danger"
+                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:1;">
+                                10</div>
+                            <ion-icon name="medkit-outline" style="font-size: 1.6rem" class="text-success mb-1"></ion-icon>
+                            <br>
+                            <span style="font-size: 0.8rem; font-weight: 500">Sakit</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="card">
+                        <div class="card-body text-center" style="padding: 12px 12px !important; line-height: 0.8rem">
+                            <div class="badge badge-danger"
+                                style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:1;">
+                                10</div>
+                            <ion-icon name="alarm-outline" style="font-size: 1.6rem" class="text-danger mb-1"></ion-icon>
+                            <br>
+                            <span style="font-size: 0.8rem; font-weight: 500">Telat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="presencetab mt-2">
             <div class="tab-pane fade show active" id="pilled" role="tabpanel">
                 <ul class="nav nav-tabs style1" role="tablist">
