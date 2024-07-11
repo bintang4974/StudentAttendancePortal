@@ -27,46 +27,78 @@ class AttendanceController extends Controller
         // die;
         $date = date('Y-m-d');
         $time = date('H:i:s');
+        // menentukan latitude & longitude kantor
+        $latitudeKantor = -7.2565280548557825;
+        $longitudeKantor = 112.7375558738815;
         $location = $request->lokasi;
+        $locationUser = explode(',', $location);
+        $latitudeUser = $locationUser[0];
+        $longitudeUser = $locationUser[1];
+
+        $jarak = $this->distance($latitudeKantor, $longitudeKantor, $latitudeUser, $longitudeUser);
+        $radius = round($jarak['meters']);
+
         $image = $request->image;
         $folderPath = 'public/uploads/absensi';
         $formatName = $student_id . '-' . $date;
         $image_parts = explode(';base64', $image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
+        $photo_out = $formatName . 'out' . ".png";
         $file = $folderPath . $fileName;
+        $fileOut = $folderPath . $photo_out;
 
         // Attendance::create($data);
         $check = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->count();
-        if ($check > 0) {
-            $data_pulang = [
-                'time_out' => $time,
-                'photo_out' => $fileName,
-                'location_out' => $location
-            ];
-            $update = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->update($data_pulang);
-            if ($update) {
-                echo 'success|Terimakasih, hati-hati dijalan|out';
-                Storage::put($file, $image_base64);
-            } else {
-                echo 'error|Gagal Absensi!|out';
-            }
+        if ($radius > 15000) {
+            echo "error|maaf anda berada diluar radius";
         } else {
-            $data = [
-                'student_id' => $student_id,
-                'date' => $date,
-                'time_in' => $time,
-                'photo_in' => $fileName,
-                'location_in' => $location
-            ];
-
-            $save = DB::table('attendances')->insert($data);
-            if ($save) {
-                echo 'success|Terimakasih, Selamat Bekerja|in';
-                Storage::put($file, $image_base64);
+            // pengkondisian jika user sudah absen
+            if ($check > 0) {
+                $data_pulang = [
+                    'time_out' => $time,
+                    'photo_out' => $photo_out,
+                    'location_out' => $location
+                ];
+                $update = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->update($data_pulang);
+                if ($update) {
+                    echo 'success|Terimakasih, hati-hati dijalan|out';
+                    Storage::put($fileOut, $image_base64);
+                } else {
+                    echo 'error|Gagal Absensi!|out';
+                }
             } else {
-                echo 'error|Gagal Absensi!|in';
+                // pengkondisian ketika user belum absen
+                $data = [
+                    'student_id' => $student_id,
+                    'date' => $date,
+                    'time_in' => $time,
+                    'photo_in' => $fileName,
+                    'location_in' => $location
+                ];
+
+                $save = DB::table('attendances')->insert($data);
+                if ($save) {
+                    echo 'success|Terimakasih, Selamat Bekerja|in';
+                    Storage::put($file, $image_base64);
+                } else {
+                    echo 'error|Gagal Absensi!|in';
+                }
             }
         }
+    }
+
+    function distance($lat1, $lon1, $lat2, $lon2)
+    {
+        $theta = $lon1 - $lon2;
+        $miles = (sin(deg2rad($lat1)) * sin(deg2rad($lat2))) + (cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta)));
+        $miles = acos($miles);
+        $miles = rad2deg($miles);
+        $miles = $miles * 60 * 1.1515;
+        $feet = $miles * 5280;
+        $yards = $feet / 3;
+        $kilometers = $miles * 1.609344;
+        $meters = $kilometers * 1000;
+        return compact('meters');
     }
 }
