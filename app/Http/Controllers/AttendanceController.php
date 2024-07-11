@@ -38,18 +38,21 @@ class AttendanceController extends Controller
         $jarak = $this->distance($latitudeKantor, $longitudeKantor, $latitudeUser, $longitudeUser);
         $radius = round($jarak['meters']);
 
+        // query untuk mendapatkan absen pada hari ini
+        $check = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->count();
+        if ($check > 0) {
+            $ket = "out";
+        } else {
+            $ket = "in";
+        }
         $image = $request->image;
         $folderPath = 'public/uploads/absensi';
-        $formatName = $student_id . '-' . $date;
+        $formatName = $student_id . '-' . $date . "-" . $ket;
         $image_parts = explode(';base64', $image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
-        $photo_out = $formatName . 'out' . ".png";
         $file = $folderPath . $fileName;
-        $fileOut = $folderPath . $photo_out;
 
-        // Attendance::create($data);
-        $check = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->count();
         if ($radius > 15000) {
             echo "error|maaf anda berada diluar radius";
         } else {
@@ -57,13 +60,13 @@ class AttendanceController extends Controller
             if ($check > 0) {
                 $data_pulang = [
                     'time_out' => $time,
-                    'photo_out' => $photo_out,
+                    'photo_out' => $fileName,
                     'location_out' => $location
                 ];
                 $update = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->update($data_pulang);
                 if ($update) {
                     echo 'success|Terimakasih, hati-hati dijalan|out';
-                    Storage::put($fileOut, $image_base64);
+                    Storage::put($file, $image_base64);
                 } else {
                     echo 'error|Gagal Absensi!|out';
                 }
