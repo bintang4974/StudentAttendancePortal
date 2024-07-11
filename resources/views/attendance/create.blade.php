@@ -41,12 +41,12 @@
     <div class="row">
         <div class="col">
             @if ($check > 0)
-                <button id="takeattendance" class="btn btn-danger btn-block">
+                <button id="takeattendance" class="btn btn-danger btn-block mt-2">
                     <ion-icon name="camera-outline"></ion-icon>
                     Absen Pulang
                 </button>
             @else
-                <button id="takeattendance" class="btn btn-primary btn-block">
+                <button id="takeattendance" class="btn btn-primary btn-block mt-2">
                     <ion-icon name="camera-outline"></ion-icon>
                     Absen Masuk
                 </button>
@@ -86,9 +86,16 @@
             var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                // attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+            // marker untuk absen area surabaya
+            var circle = L.circle([-7.2565280548557825, 112.7375558738815], {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 15000
+            }).addTo(map);
         }
 
         $('#takeattendance').click(function(e) {
@@ -121,7 +128,7 @@
                     } else {
                         Swal.fire({
                             title: 'Error!',
-                            text: 'Gagal Absen!',
+                            text: status[1],
                             icon: 'error',
                             confirmButtonText: 'OK'
                         })

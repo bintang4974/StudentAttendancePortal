@@ -26,6 +26,18 @@ class StudentSeeder extends Seeder
                 'department_id' => 1,
                 'mentor_id' => 2
             ],
+            [
+                'name' => 'Dimas',
+                'nim' => '1204210076',
+                'email' => 'dimas@gmail.com',
+                'password' => '12345678',
+                'university' => 'Telkom University Surabaya',
+                'gender' => 'Laki-laki',
+                'city' => 'Surabaya',
+                'address' => 'Demak, Surabaya',
+                'department_id' => 2,
+                'mentor_id' => 1
+            ],
         ]);
     }
 }
