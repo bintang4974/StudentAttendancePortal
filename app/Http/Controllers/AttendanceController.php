@@ -46,7 +46,7 @@ class AttendanceController extends Controller
             $ket = "in";
         }
         $image = $request->image;
-        $folderPath = 'public/uploads/absensi';
+        $folderPath = 'public/uploads/absensi/';
         $formatName = $student_id . '-' . $date . "-" . $ket;
         $image_parts = explode(';base64', $image);
         $image_base64 = base64_decode($image_parts[1]);
