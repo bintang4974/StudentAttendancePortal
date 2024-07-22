@@ -37,6 +37,7 @@ class DashboardController extends Controller
         $leaderboard = DB::table('attendances')
             ->join('students', 'attendances.student_id', '=', 'students.id')
             ->where('date', $today)
+            ->orderBy('time_in')
             ->get();
         $nameMonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         // dd($nameMonth[$thisMonth]);
