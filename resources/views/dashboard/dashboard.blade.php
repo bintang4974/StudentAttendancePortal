@@ -211,8 +211,13 @@
                                 <div class="item">
                                     <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
                                     <div class="in">
-                                        <div>{{ $leaderboard->name }}</div>
-                                        <span class="text-muted">Designer</span>
+                                        <div>
+                                            <b>{{ $leaderboard->name }}</b><br>
+                                            <small class="text-mute">Divisi</small>
+                                        </div>
+                                        <span class="badge {{ $leaderboard->time_in < '08:00' ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $leaderboard->time_in }}
+                                        </span>
                                     </div>
                                 </div>
                             </li>
