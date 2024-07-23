@@ -158,4 +158,27 @@ class AttendanceController extends Controller
             return Redirect::back()->with(['error' => 'Failed Update!']);
         }
     }
+
+    public function history()
+    {
+        $namemonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return view('attendance.history', compact('namemonth'));
+    }
+
+    public function gethistory(Request $request)
+    {
+        $month = $request->month;
+        $year = $request->year;
+        $student_id = Auth::guard('student')->user()->id;
+
+        // mengambil history user berdasarkan bulan dan tahun
+        $history = DB::table('attendances')
+            ->whereRaw('MONTH(date)="' . $month . '"')
+            ->whereRaw('YEAR(date)="' . $year . '"')
+            ->where('student_id', $student_id)
+            ->orderBy('date')
+            ->get();
+
+        return view('attendance.gethistory', compact('history'));
+    }
 }
