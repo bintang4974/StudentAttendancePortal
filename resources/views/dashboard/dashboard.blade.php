@@ -4,7 +4,14 @@
     <div class="section" id="user-section">
         <div id="user-detail">
             <div class="avatar">
-                <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+                @if (!empty(Auth::guard('student')->user()->photo))
+                    @php
+                        $path = Storage::url('uploads/student/' . Auth::guard('student')->user()->photo);
+                    @endphp
+                    <img src="{{ $path }}" alt="avatar" class="imaged w64" style="height: 60px">
+                @else
+                    <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+                @endif
             </div>
             <div id="user-info">
                 <h2 id="user-name">{{ Auth::guard('student')->user()->name }}</h2>
@@ -146,7 +153,8 @@
                             <div class="badge badge-danger"
                                 style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:1;">
                                 0</div>
-                            <ion-icon name="medkit-outline" style="font-size: 1.6rem" class="text-success mb-1"></ion-icon>
+                            <ion-icon name="medkit-outline" style="font-size: 1.6rem"
+                                class="text-success mb-1"></ion-icon>
                             <br>
                             <span style="font-size: 0.8rem; font-weight: 500">Sakit</span>
                         </div>
@@ -215,7 +223,8 @@
                                             <b>{{ $leaderboard->name }}</b><br>
                                             <small class="text-mute">Divisi</small>
                                         </div>
-                                        <span class="badge {{ $leaderboard->time_in < '08:00' ? 'bg-success' : 'bg-danger' }}">
+                                        <span
+                                            class="badge {{ $leaderboard->time_in < '08:00' ? 'bg-success' : 'bg-danger' }}">
                                             {{ $leaderboard->time_in }}
                                         </span>
                                     </div>
