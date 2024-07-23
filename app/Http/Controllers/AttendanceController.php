@@ -6,6 +6,8 @@ use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
 use function Laravel\Prompts\alert;
@@ -103,5 +105,57 @@ class AttendanceController extends Controller
         $kilometers = $miles * 1.609344;
         $meters = $kilometers * 1000;
         return compact('meters');
+    }
+
+    public function editprofile()
+    {
+        $student_id = Auth::guard('student')->user()->id;
+        $student = DB::table('students')->where('id', $student_id)->first();
+
+        return view('attendance.editprofile', compact('student'));
+    }
+
+    public function updateprofile(Request $request)
+    {
+        $student_id = Auth::guard('student')->user()->id;
+        $name = $request->name;
+        $email = $request->email;
+        $phone = $request->phone;
+        $password = Hash::make($request->password);
+        $student = DB::table('students')->where('id', $student_id)->first();
+
+        if ($request->hasFile('photo')) {
+            $photo = $student_id . "." . $request->file('photo')->getClientOriginalExtension();
+        } else {
+            $photo = $student->photo;
+        }
+
+        if (empty($request->password)) {
+            $data = [
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone,
+                'photo' => $photo
+            ];
+        } else {
+            $data = [
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phone,
+                'password' => $password,
+                'photo' => $photo,
+            ];
+        }
+
+        $update = DB::table('students')->where('id', $student_id)->update($data);
+        if ($update) {
+            if ($request->hasFile('photo')) {
+                $folderPath = 'public/uploads/student/';
+                $request->file('photo')->storeAs($folderPath, $photo);
+            }
+            return Redirect::back()->with(['success' => 'Success Update!']);
+        } else {
+            return Redirect::back()->with(['error' => 'Failed Update!']);
+        }
     }
 }

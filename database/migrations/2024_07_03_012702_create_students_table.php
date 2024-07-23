@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('nim')->unique();
             $table->string('email');
             $table->string('password');
+            $table->string('phone');
             $table->string('university');
             $table->string('gender');
             $table->string('city');
             $table->text('address');
+            $table->string('photo')->nullable();
             $table->foreignId('department_id')->constrained();
             $table->foreignId('mentor_id')->constrained();
             $table->timestamps();

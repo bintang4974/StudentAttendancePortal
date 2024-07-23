@@ -27,6 +27,12 @@ Route::middleware(['guest:student'])->group(function () {
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/processlogout', [AuthController::class, 'processLogout']);
+
+    // attendance
     Route::get('/attendance/create', [AttendanceController::class, 'create']);
     Route::post('/attendance/store', [AttendanceController::class, 'store']);
+    
+    // edit profile
+    Route::get('/editprofile', [AttendanceController::class, 'editprofile']);
+    Route::post('/attendance/{id}/updateprofile', [AttendanceController::class, 'updateprofile']);
 });
