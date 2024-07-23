@@ -35,4 +35,8 @@ Route::middleware(['auth:student'])->group(function () {
     // edit profile
     Route::get('/editprofile', [AttendanceController::class, 'editprofile']);
     Route::post('/attendance/{id}/updateprofile', [AttendanceController::class, 'updateprofile']);
+    
+    // history
+    Route::get('/attendance/history', [AttendanceController::class, 'history']);
+    Route::post('/gethistory', [AttendanceController::class, 'gethistory']);
 });
