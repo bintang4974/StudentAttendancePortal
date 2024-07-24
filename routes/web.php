@@ -39,4 +39,9 @@ Route::middleware(['auth:student'])->group(function () {
     // history
     Route::get('/attendance/history', [AttendanceController::class, 'history']);
     Route::post('/gethistory', [AttendanceController::class, 'gethistory']);
+    
+    // permission/izin
+    Route::get('/attendance/permission', [AttendanceController::class, 'permission']);
+    Route::get('/attendance/creatpermission', [AttendanceController::class, 'creatpermission']);
+    Route::post('/attendance/storepermission', [AttendanceController::class, 'storepermission']);
 });
