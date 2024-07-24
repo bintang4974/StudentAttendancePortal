@@ -181,4 +181,38 @@ class AttendanceController extends Controller
 
         return view('attendance.gethistory', compact('history'));
     }
+
+    public function permission()
+    {
+        return view('attendance.permission');
+    }
+
+    public function creatpermission()
+    {
+        return view('attendance.creatpermission');
+    }
+
+    public function storepermission(Request $request)
+    {
+        $student_id = Auth::guard('student')->user()->id;
+        $date = $request->date;
+        $status = $request->status;
+        $description = $request->description;
+        $status_approved = 0;
+
+        $data = [
+            'student_id' => $student_id,
+            'date' => $date,
+            'status' => $status,
+            'description' => $description,
+            'status_approved' => $status_approved,
+        ];
+
+        $save = DB::table('permissions')->insert($data);
+        if ($save) {
+            return redirect('/attendance/permission')->with(['success' => 'Data Berhasil Disimpan!']);
+        }else{
+            return redirect('/attendance/permission')->with(['error' => 'Data Gagal Disimpan!']);
+        }
+    }
 }
