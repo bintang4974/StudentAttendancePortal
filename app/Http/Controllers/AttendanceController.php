@@ -184,7 +184,9 @@ class AttendanceController extends Controller
 
     public function permission()
     {
-        return view('attendance.permission');
+        $student_id = Auth::guard('student')->user()->id;
+        $permission = DB::table('permissions')->where('student_id', $student_id)->get();
+        return view('attendance.permission', compact('permission'));
     }
 
     public function creatpermission()
@@ -211,7 +213,7 @@ class AttendanceController extends Controller
         $save = DB::table('permissions')->insert($data);
         if ($save) {
             return redirect('/attendance/permission')->with(['success' => 'Data Berhasil Disimpan!']);
-        }else{
+        } else {
             return redirect('/attendance/permission')->with(['error' => 'Data Gagal Disimpan!']);
         }
     }
