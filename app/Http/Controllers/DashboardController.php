@@ -41,6 +41,15 @@ class DashboardController extends Controller
             ->get();
         $nameMonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         // dd($nameMonth[$thisMonth]);
-        return view('dashboard.dashboard', compact('attendanceToday', 'historyThisMonth', 'nameMonth', 'thisMonth', 'thisYear', 'recapAttendance', 'leaderboard'));
+
+        // query untuk menghitung jumlah izin dari user berdasarkan bulan yang berjalan
+        $recappermission = DB::table('permissions')
+            ->selectRaw('SUM(IF(status="i",1,0)) as amountpermis, SUM(IF(status="s",1,0)) as amountsick')
+            ->where('student_id', $student_id)
+            ->whereRaw('MONTH(date)="' . $thisMonth . '"')
+            ->whereRaw('YEAR(date)="' . $thisYear . '"')
+            ->where('status_approved', 1)
+            ->first();
+        return view('dashboard.dashboard', compact('attendanceToday', 'historyThisMonth', 'nameMonth', 'thisMonth', 'thisYear', 'recapAttendance', 'leaderboard', 'recappermission'));
     }
 }
