@@ -26,7 +26,7 @@
                 <div class="list-menu">
                     <div class="item-menu text-center">
                         <div class="menu-icon">
-                            <a href="" class="green" style="font-size: 40px;">
+                            <a href="/editprofile" class="green" style="font-size: 40px;">
                                 <ion-icon name="person-sharp"></ion-icon>
                             </a>
                         </div>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="item-menu text-center">
                         <div class="menu-icon">
-                            <a href="" class="danger" style="font-size: 40px;">
+                            <a href="/attendance/permission" class="danger" style="font-size: 40px;">
                                 <ion-icon name="calendar-number"></ion-icon>
                             </a>
                         </div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="item-menu text-center">
                         <div class="menu-icon">
-                            <a href="" class="warning" style="font-size: 40px;">
+                            <a href="/attendance/history" class="warning" style="font-size: 40px;">
                                 <ion-icon name="document-text"></ion-icon>
                             </a>
                         </div>
@@ -139,7 +139,7 @@
                         <div class="card-body text-center" style="padding: 12px 12px !important; line-height: 0.8rem">
                             <div class="badge badge-danger"
                                 style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:1;">
-                                0</div>
+                                {{ $recappermission->amountpermis }}</div>
                             <ion-icon name="newspaper-outline" style="font-size: 1.6rem"
                                 class="text-warning mb-1"></ion-icon>
                             <br>
@@ -152,7 +152,7 @@
                         <div class="card-body text-center" style="padding: 12px 12px !important; line-height: 0.8rem">
                             <div class="badge badge-danger"
                                 style="position: absolute; top:3px; right:10px; font-size:0.6rem; z-index:1;">
-                                0</div>
+                                {{ $recappermission->amountsick }}</div>
                             <ion-icon name="medkit-outline" style="font-size: 1.6rem"
                                 class="text-success mb-1"></ion-icon>
                             <br>
