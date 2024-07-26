@@ -24,6 +24,12 @@ Route::middleware(['guest:student'])->group(function () {
     Route::post('/processlogin', [AuthController::class, 'processlogin']);
 });
 
+Route::middleware(['guest:user'])->group(function () {
+    Route::get('/panel', function () {
+        return view('auth.loginadmin');
+    })->name('loginadmin');
+});
+
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/processlogout', [AuthController::class, 'processLogout']);
@@ -31,17 +37,19 @@ Route::middleware(['auth:student'])->group(function () {
     // attendance
     Route::get('/attendance/create', [AttendanceController::class, 'create']);
     Route::post('/attendance/store', [AttendanceController::class, 'store']);
-    
+
     // edit profile
     Route::get('/editprofile', [AttendanceController::class, 'editprofile']);
     Route::post('/attendance/{id}/updateprofile', [AttendanceController::class, 'updateprofile']);
-    
+
     // history
     Route::get('/attendance/history', [AttendanceController::class, 'history']);
     Route::post('/gethistory', [AttendanceController::class, 'gethistory']);
-    
+
     // permission/izin
     Route::get('/attendance/permission', [AttendanceController::class, 'permission']);
     Route::get('/attendance/creatpermission', [AttendanceController::class, 'creatpermission']);
     Route::post('/attendance/storepermission', [AttendanceController::class, 'storepermission']);
 });
+
+Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
