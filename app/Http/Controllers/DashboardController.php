@@ -52,4 +52,9 @@ class DashboardController extends Controller
             ->first();
         return view('dashboard.dashboard', compact('attendanceToday', 'historyThisMonth', 'nameMonth', 'thisMonth', 'thisYear', 'recapAttendance', 'leaderboard', 'recappermission'));
     }
+
+    public function dashboardadmin()
+    {
+        return view('dashboard.dashboardadmin');
+    }
 }
