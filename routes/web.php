@@ -28,6 +28,8 @@ Route::middleware(['guest:user'])->group(function () {
     Route::get('/panel', function () {
         return view('auth.loginadmin');
     })->name('loginadmin');
+
+    Route::post('/processloginadmin', [AuthController::class, 'processloginadmin']);
 });
 
 Route::middleware(['auth:student'])->group(function () {
@@ -52,4 +54,7 @@ Route::middleware(['auth:student'])->group(function () {
     Route::post('/attendance/storepermission', [AttendanceController::class, 'storepermission']);
 });
 
-Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
+Route::middleware(['auth:user'])->group(function () {
+    Route::get('/processlogoutadmin', [AuthController::class, 'processLogoutAdmin']);
+    Route::get('/panel/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
+});

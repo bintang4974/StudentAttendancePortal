@@ -21,9 +21,26 @@ class AuthController extends Controller
 
     public function processLogout()
     {
-        if(Auth::guard('student')->check()){
+        if (Auth::guard('student')->check()) {
             Auth::guard('student')->logout();
             return redirect('/');
+        }
+    }
+
+    public function processloginadmin(Request $request)
+    {
+        if (Auth::guard('user')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            return redirect('/panel/dashboardadmin');
+        } else {
+            return redirect('/panel')->with(['warning' => 'email/pass salah!']);
+        }
+    }
+
+    public function processLogoutAdmin()
+    {
+        if (Auth::guard('user')->check()) {
+            Auth::guard('user')->logout();
+            return redirect('/panel');
         }
     }
 }
