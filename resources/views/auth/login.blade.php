@@ -31,7 +31,8 @@
 
         <div class="login-form mt-1">
             <div class="section">
-                <img src="assets/img/sample/photo/vector4.png" alt="image" class="form-image">
+                {{-- <img src="{{ asset('logo/pemkot.png') }}" style="width: 118px; height:165px;" alt="image" class="form-image"> --}}
+                <img src="{{ asset('logo/dinkop.png') }}" style="width: 180px; height:180px;" alt="image" class="form-image">
             </div>
             <div class="section mt-1">
                 <h1>Student Attendance Portal</h1>
@@ -42,7 +43,7 @@
                     $message = Session::get('warning');
                 @endphp
                 @if (Session::get('warning'))
-                    <div class="alert alert-outline-warning">
+                    <div class="alert alert-outline-danger">
                         {{ $message }}
                     </div>
                 @endif
@@ -73,7 +74,7 @@
                     </div>
 
                     <div class="form-button-group">
-                        <button type="submit" class="btn btn-primary btn-block btn-lg">Log in</button>
+                        <button type="submit" class="btn btn-primary btn-block btn-lg"><ion-icon name="enter-outline"></ion-icon>Log in</button>
                     </div>
 
                 </form>
