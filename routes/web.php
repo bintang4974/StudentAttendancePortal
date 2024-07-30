@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,4 +58,7 @@ Route::middleware(['auth:student'])->group(function () {
 Route::middleware(['auth:user'])->group(function () {
     Route::get('/processlogoutadmin', [AuthController::class, 'processLogoutAdmin']);
     Route::get('/panel/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
+
+    // student
+    Route::get('/student', [StudentController::class, 'index']);
 });
