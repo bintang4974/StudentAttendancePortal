@@ -65,7 +65,7 @@ class DashboardController extends Controller
             ->selectRaw('SUM(IF(status="i",1,0)) as amountpermis, SUM(IF(status="s",1,0)) as amountsick')
             ->where('date', $today)
             ->where('status_approved', 1)
-            ->first();  
+            ->first();
 
         return view('dashboard.dashboardadmin', compact('recapAttendance', 'recappermission'));
     }

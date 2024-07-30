@@ -37,4 +37,14 @@ class Student extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function mentor()
+    {
+        return $this->belongsTo(Mentor::class);
+    }
 }
