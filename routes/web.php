@@ -61,4 +61,5 @@ Route::middleware(['auth:user'])->group(function () {
 
     // student
     Route::get('/student', [StudentController::class, 'index']);
+    Route::post('/student/store', [StudentController::class, 'store']);
 });
