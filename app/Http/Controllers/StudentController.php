@@ -109,7 +109,7 @@ class StudentController extends Controller
         $old_photo = $request->old_photo;
 
         if ($request->hasFile('photo')) {
-            $photo = $id . "." . $request->file('photo')->getClientOriginalExtension();
+            $photo = $nim . "." . $request->file('photo')->getClientOriginalExtension();
         } else {
             $photo = $old_photo;
         }
@@ -142,6 +142,16 @@ class StudentController extends Controller
         } catch (\Exception $e) {
             // dd($e);
             return Redirect::back()->with(['error' => 'Failed Update!']);
+        }
+    }
+
+    public function delete($id)
+    {
+        $delete = DB::table('students')->where('id', $id)->delete();
+        if ($delete) {
+            return Redirect::back()->with(['success' => 'Success Delete!']);
+        } else {
+            return Redirect::back()->with(['error' => 'Failed Delete!']);
         }
     }
 }
