@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -24,7 +25,7 @@ class StudentController extends Controller
         if (!empty($request->name_dept)) {
             $query->where('departments.name', $request->name_dept);
         }
-        $student = $query->paginate(1);
+        $student = $query->paginate(10);
         $department = Department::all();
         $mentor = Mentor::all();
 
@@ -43,10 +44,8 @@ class StudentController extends Controller
         $gender = $request->gender;
         $city = $request->city;
         $address = $request->address;
-        // $photo = $request->photo;
         $department_id = $request->department_id;
         $mentor_id = $request->mentor_id;
-        // $student = DB::table('students')->where('id', $nim)->first();
 
         if ($request->hasFile('photo')) {
             $photo = $nim . "." . $request->file('photo')->getClientOriginalExtension();
@@ -70,7 +69,7 @@ class StudentController extends Controller
                 'mentor_id' => $mentor_id,
             ];
             $save = DB::table('students')->insert($data);
-            if($save){
+            if ($save) {
                 if ($request->hasFile('photo')) {
                     $folderPath = 'public/uploads/student/';
                     $request->file('photo')->storeAs($folderPath, $photo);
@@ -80,6 +79,69 @@ class StudentController extends Controller
         } catch (\Exception $e) {
             // dd($e);
             return Redirect::back()->with(['error' => 'Failed Store!']);
+        }
+    }
+
+    public function edit(Request $request)
+    {
+        $idmhs = $request->idmhs;
+        $department = Department::all();
+        $mentor = Mentor::all();
+        $student = DB::table('students')->where('id', $idmhs)->first();
+        return view('student.edit', compact('department', 'mentor', 'student'));
+    }
+
+    public function update(Request $request)
+    {
+        $pass = 12345678;
+        $id = $request->id;
+        $name = $request->name;
+        $nim = $request->nim;
+        $email = $request->email;
+        $password = Hash::make($pass);
+        $phone = $request->phone;
+        $university = $request->university;
+        $gender = $request->gender;
+        $city = $request->city;
+        $address = $request->address;
+        $department_id = $request->department_id;
+        $mentor_id = $request->mentor_id;
+        $old_photo = $request->old_photo;
+
+        if ($request->hasFile('photo')) {
+            $photo = $id . "." . $request->file('photo')->getClientOriginalExtension();
+        } else {
+            $photo = $old_photo;
+        }
+
+        try {
+            $data = [
+                'name' => $name,
+                // 'nim' => $nim,
+                'email' => $email,
+                'password' => $password,
+                'phone' => $phone,
+                'university' => $university,
+                'gender' => $gender,
+                'city' => $city,
+                'address' => $address,
+                'photo' => $photo,
+                'department_id' => $department_id,
+                'mentor_id' => $mentor_id,
+            ];
+            $update = DB::table('students')->where('id', $id)->update($data);
+            if ($update) {
+                if ($request->hasFile('photo')) {
+                    $folderPath = 'public/uploads/student/';
+                    $folderPathOld = 'public/uploads/student/' . $old_photo;
+                    Storage::delete($folderPathOld);
+                    $request->file('photo')->storeAs($folderPath, $photo);
+                }
+                return Redirect::back()->with(['success' => 'Success Update!']);
+            }
+        } catch (\Exception $e) {
+            // dd($e);
+            return Redirect::back()->with(['error' => 'Failed Update!']);
         }
     }
 }
