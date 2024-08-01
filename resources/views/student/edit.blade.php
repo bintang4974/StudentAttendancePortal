@@ -33,6 +33,26 @@
                         <path d="M17 4l0 6" />
                     </svg>
                 </span>
+                <input type="text" value="{{ $student->activity_id }}" name="activity_id" id="activity_id" class="form-control"
+                    placeholder="ID Kegiatan" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="input-icon mb-3">
+                <span class="input-icon-addon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-apps">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                        <path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                        <path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                        <path d="M14 7l6 0" />
+                        <path d="M17 4l0 6" />
+                    </svg>
+                </span>
                 <input type="text" value="{{ $student->nim }}" name="nim" id="nim" class="form-control"
                     placeholder="NIM" readonly>
             </div>
@@ -110,23 +130,6 @@
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                        <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
-                    </svg>
-                </span>
-                <input type="text" value="{{ $student->city }}" name="city" id="city"
-                    class="form-control" placeholder="city">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="input-icon mb-3">
-                <span class="input-icon-addon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-home">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
@@ -134,7 +137,7 @@
                         <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                     </svg>
                 </span>
-                <textarea name="address" id="address" class="form-control" placeholder="address">{{ $student->address }}</textarea>
+                <textarea name="placement" id="placement" class="form-control" placeholder="placement">{{ $student->placement }}</textarea>
             </div>
         </div>
     </div>
@@ -163,6 +166,17 @@
                 <option value="">Pilih Department</option>
                 @foreach ($department as $item)
                     <option {{ $student->department_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">
+                        {{ $item->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            <select name="position_id" id="position_id" class="form-select">
+                <option value="">Pilih Posisi</option>
+                @foreach ($position as $item)
+                    <option {{ $student->position_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">
                         {{ $item->name }}</option>
                 @endforeach
             </select>

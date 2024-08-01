@@ -17,12 +17,14 @@ class DepartmentSeeder extends Seeder
             [
                 'name' => 'Pemberdayaan Usaha Mikro',
                 'head_department' => 'Iqbal',
-                'phone' => '081768345632',
             ],
             [
                 'name' => 'Sekretariat',
                 'head_department' => 'Bagas',
-                'phone' => '081709172893'
+            ],
+            [
+                'name' => 'Distribusi Perdagangan',
+                'head_department' => 'Rofi',
             ],
         ]);
     }

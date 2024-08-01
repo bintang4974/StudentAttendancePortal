@@ -14,16 +14,17 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('nim')->unique();
+            $table->string('activity_id')->unique();
+            $table->string('nim');
             $table->string('email');
             $table->string('password');
             $table->string('phone');
             $table->string('university');
             $table->string('gender');
-            $table->string('city');
-            $table->text('address');
+            $table->text('placement');
             $table->string('photo')->nullable();
             $table->foreignId('department_id')->constrained();
+            $table->foreignId('position_id')->constrained();
             $table->foreignId('mentor_id')->constrained();
             $table->timestamps();
         });

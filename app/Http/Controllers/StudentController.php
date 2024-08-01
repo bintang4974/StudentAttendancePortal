@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Mentor;
+use App\Models\Position;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,24 +29,14 @@ class StudentController extends Controller
         $student = $query->paginate(10);
         $department = Department::all();
         $mentor = Mentor::all();
+        $position = Position::all();
 
-        return view('student.index', compact('student', 'department', 'mentor'));
+        return view('student.index', compact('student', 'department', 'mentor', 'position'));
     }
 
     public function store(Request $request)
     {
-        $pass = 12345678;
-        $name = $request->name;
         $nim = $request->nim;
-        $email = $request->email;
-        $password = Hash::make($pass);
-        $phone = $request->phone;
-        $university = $request->university;
-        $gender = $request->gender;
-        $city = $request->city;
-        $address = $request->address;
-        $department_id = $request->department_id;
-        $mentor_id = $request->mentor_id;
 
         if ($request->hasFile('photo')) {
             $photo = $nim . "." . $request->file('photo')->getClientOriginalExtension();
@@ -54,19 +45,21 @@ class StudentController extends Controller
         }
 
         try {
+            $pass = 12345678;
             $data = [
-                'name' => $name,
+                'name' => $request->name,
+                'activity_id' => $request->activity_id,
                 'nim' => $nim,
-                'email' => $email,
-                'password' => $password,
-                'phone' => $phone,
-                'university' => $university,
-                'gender' => $gender,
-                'city' => $city,
-                'address' => $address,
+                'email' => $request->email,
+                'password' => Hash::make($pass),
+                'phone' => $request->phone,
+                'university' => $request->university,
+                'gender' => $request->gender,
+                'placement' => $request->placement,
                 'photo' => $photo,
-                'department_id' => $department_id,
-                'mentor_id' => $mentor_id,
+                'department_id' => $request->department_id,
+                'position_id' => $request->position_id,
+                'mentor_id' => $request->mentor_id,
             ];
             $save = DB::table('students')->insert($data);
             if ($save) {
@@ -87,25 +80,16 @@ class StudentController extends Controller
         $idmhs = $request->idmhs;
         $department = Department::all();
         $mentor = Mentor::all();
+        $position = Position::all();
         $student = DB::table('students')->where('id', $idmhs)->first();
-        return view('student.edit', compact('department', 'mentor', 'student'));
+        return view('student.edit', compact('department', 'mentor', 'student', 'position'));
     }
 
     public function update(Request $request)
     {
-        $pass = 12345678;
+        
         $id = $request->id;
-        $name = $request->name;
         $nim = $request->nim;
-        $email = $request->email;
-        $password = Hash::make($pass);
-        $phone = $request->phone;
-        $university = $request->university;
-        $gender = $request->gender;
-        $city = $request->city;
-        $address = $request->address;
-        $department_id = $request->department_id;
-        $mentor_id = $request->mentor_id;
         $old_photo = $request->old_photo;
 
         if ($request->hasFile('photo')) {
@@ -115,19 +99,21 @@ class StudentController extends Controller
         }
 
         try {
+            $pass = 12345678;
             $data = [
-                'name' => $name,
+                'name' => $request->name,
+                'activity_id' => $request->activity_id,
                 // 'nim' => $nim,
-                'email' => $email,
-                'password' => $password,
-                'phone' => $phone,
-                'university' => $university,
-                'gender' => $gender,
-                'city' => $city,
-                'address' => $address,
+                'email' => $request->email,
+                'password' => Hash::make($pass),
+                'phone' => $request->phone,
+                'university' => $request->university,
+                'gender' => $request->gender,
+                'placement' => $request->placement,
                 'photo' => $photo,
-                'department_id' => $department_id,
-                'mentor_id' => $mentor_id,
+                'department_id' => $request->department_id,
+                'position_id' => $request->position_id,
+                'mentor_id' => $request->mentor_id,
             ];
             $update = DB::table('students')->where('id', $id)->update($data);
             if ($update) {
