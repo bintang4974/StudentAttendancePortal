@@ -3,6 +3,7 @@
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,4 +65,8 @@ Route::middleware(['auth:user'])->group(function () {
     Route::post('/student/store', [StudentController::class, 'store']);
     Route::post('/student/edit', [StudentController::class, 'edit']);
     Route::post('/student/{id}/update', [StudentController::class, 'update']);
+    Route::post('/student/{id}/delete', [StudentController::class, 'delete']);
+
+    // department
+    Route::get('/department', [DepartmentController::class, 'index']);
 });

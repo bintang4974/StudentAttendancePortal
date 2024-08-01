@@ -19,148 +19,157 @@
         <div class="container-xl">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-12">
-                                    @if (Session::get('success'))
-                                        <div class="alert alert-success" role="alert">
-                                            {{ Session::get('success') }}
-                                        </div>
-                                    @endif
-                                    @if (Session::get('error'))
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ Session::get('error') }}
-                                        </div>
-                                    @endif
+                    @if (Session::get('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ Session::get('success') }}
+                        </div>
+                    @endif
+                    @if (Session::get('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ Session::get('error') }}
+                        </div>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <a href="#" class="btn btn-primary" id="btnInputstudent">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                            <path d="M16 19h6" />
+                            <path d="M19 16v6" />
+                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                        </svg>
+                        Tambah
+                    </a>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <form action="/student" method="GET">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input type="text" name="name_student" id="name_student" class="form-control"
+                                        placeholder="Nama Karyawan" value="{{ Request('name_student') }}">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <a href="#" class="btn btn-primary" id="btnInputstudent">
+                            <div class="col-4">
+                                <select name="name_dept" id="name_dept" class="form-select">
+                                    <option value="">Department</option>
+                                    @foreach ($department as $item)
+                                        <option {{ Request('name_dept') == $item->name ? 'selected' : '' }}
+                                            value="{{ $item->name }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-search">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                                            <path d="M16 19h6" />
-                                            <path d="M19 16v6" />
-                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                                            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+                                            <path d="M21 21l-6 -6" />
                                         </svg>
-                                        Tambah
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="row mt-2">
-                                <div class="col-12">
-                                    <form action="/student" method="GET">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <input type="text" name="name_student" id="name_student"
-                                                        class="form-control" placeholder="Nama Karyawan"
-                                                        value="{{ Request('name_student') }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <select name="name_dept" id="name_dept" class="form-select">
-                                                    <option value="">Department</option>
-                                                    @foreach ($department as $item)
-                                                        <option {{ Request('name_dept') == $item->name ? 'selected' : '' }}
-                                                            value="{{ $item->name }}">{{ $item->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="form-group">
-                                                    <button type="submit" class="btn btn-primary">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-search">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
-                                                            <path d="M21 21l-6 -6" />
-                                                        </svg>
-                                                        Search
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-12">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Name</th>
-                                                <th>NIM</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
-                                                <th>University</th>
-                                                <th>Gender</th>
-                                                <th>City</th>
-                                                <th>Address</th>
-                                                <th>Photo</th>
-                                                <th>Department</th>
-                                                <th>Mentor</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($student as $item)
-                                                @php
-                                                    $path = Storage::url('uploads/student/' . $item->photo);
-                                                @endphp
-                                                <tr>
-                                                    <td>{{ $loop->iteration + $student->firstItem() - 1 }}</td>
-                                                    <td>{{ $item->name }}</td>
-                                                    <td>{{ $item->nim }}</td>
-                                                    <td>{{ $item->email }}</td>
-                                                    <td>{{ $item->phone }}</td>
-                                                    <td>{{ $item->university }}</td>
-                                                    <td>{{ $item->gender }}</td>
-                                                    <td>{{ $item->city }}</td>
-                                                    <td>{{ $item->address }}</td>
-                                                    <td>
-                                                        @if (empty($item->photo))
-                                                            <img src="{{ asset('logo/no_photo.png') }}" class="avatar">
-                                                        @else
-                                                            <img src="{{ url($path) }}" class="avatar">
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->name_department }}</td>
-                                                    <td>{{ $item->mentor->name }}</td>
-                                                    <td>
-                                                        <a href="#" class="edit" idmhs="{{ $item->id }}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path
-                                                                    d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                <path
-                                                                    d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                <path d="M16 5l3 3" />
-                                                            </svg>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    {{ $student->links('vendor.pagination.bootstrap-5') }}
+                                        Search
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>ID Activity</th>
+                                <th>NIM</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>University</th>
+                                <th>Gender</th>
+                                <th>Placement</th>
+                                <th>Photo</th>
+                                <th>Department</th>
+                                <th>Position</th>
+                                <th>Mentor</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($student as $item)
+                                @php
+                                    $path = Storage::url('uploads/student/' . $item->photo);
+                                @endphp
+                                <tr>
+                                    <td>{{ $loop->iteration + $student->firstItem() - 1 }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->activity_id }}</td>
+                                    <td>{{ $item->nim }}</td>
+                                    <td>{{ $item->email }}</td>
+                                    <td>{{ $item->phone }}</td>
+                                    <td>{{ $item->university }}</td>
+                                    <td>{{ $item->gender }}</td>
+                                    <td>{{ $item->placement }}</td>
+                                    <td>
+                                        @if (empty($item->photo))
+                                            <img src="{{ asset('logo/no_photo.png') }}" class="avatar">
+                                        @else
+                                            <img src="{{ url($path) }}" class="avatar">
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->name_department }}</td>
+                                    <td>{{ $item->position->name }}</td>
+                                    <td>{{ $item->mentor->name }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="#" class="edit btn btn-warning btn-sm"
+                                                idmhs="{{ $item->id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                    <path
+                                                        d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                    <path d="M16 5l3 3" />
+                                                </svg>
+                                            </a>
+                                            <form action="/student/{{ $item->id }}/delete" method="post"
+                                                style="margin-left: 5px;">
+                                                @csrf
+                                                <a class="btn btn-danger btn-sm delete-confirm">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 7l16 0" />
+                                                        <path d="M10 11l0 6" />
+                                                        <path d="M14 11l0 6" />
+                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                    </svg>
+                                                </a>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    {{ $student->links('vendor.pagination.bootstrap-5') }}
                 </div>
             </div>
         </div>
@@ -191,6 +200,30 @@
                                     </span>
                                     <input type="text" value="" name="name" id="name"
                                         class="form-control" placeholder="Nama">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-icon mb-3">
+                                    <span class="input-icon-addon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-apps">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                            <path
+                                                d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                            <path
+                                                d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+                                            <path d="M14 7l6 0" />
+                                            <path d="M17 4l0 6" />
+                                        </svg>
+                                    </span>
+                                    <input type="text" value="" name="activity_id" id="activity_id"
+                                        class="form-control" placeholder="ID Kegiatan">
                                 </div>
                             </div>
                         </div>
@@ -295,25 +328,6 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                                            <path
-                                                d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" value="" name="city" id="city"
-                                        class="form-control" placeholder="city">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="input-icon mb-3">
-                                    <span class="input-icon-addon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
                                             class="icon icon-tabler icons-tabler-outline icon-tabler-home">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
@@ -321,7 +335,7 @@
                                             <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                                         </svg>
                                     </span>
-                                    <textarea name="address" id="address" class="form-control" placeholder="address"></textarea>
+                                    <textarea name="placement" id="placement" class="form-control" placeholder="placement"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -353,6 +367,16 @@
                                 <select name="department_id" id="department_id" class="form-select">
                                     <option value="">Pilih Department</option>
                                     @foreach ($department as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <select name="position_id" id="position_id" class="form-select">
+                                    <option value="">Pilih Posisi</option>
+                                    @foreach ($position as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
@@ -419,16 +443,39 @@
                 $('#modal-editstudent').modal('show')
             })
 
+            $('.delete-confirm').click(function(e) {
+                var form = $(this).closest('form')
+                e.preventDefault()
+                Swal.fire({
+                    title: "Apakah anda yakin menghapus data ini?",
+                    text: "Tekan OK untuk menghapus data",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "OK!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit()
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Data berhasil dihapus",
+                            icon: "success"
+                        });
+                    }
+                });
+            })
+
             $('#frmStudent').submit(function() {
                 var name = $('#name').val();
+                var activity_id = $('#activity_id').val();
                 var nim = $('#nim').val();
                 var email = $('#email').val();
                 var password = $('#password').val();
                 var phone = $('#phone').val();
                 var university = $('#university').val();
                 var gender = $('#gender').val();
-                var city = $('#city').val();
-                var address = $('#address').val();
+                var placement = $('#placement').val();
                 var photo = $('#photo').val();
                 var department_id = $('#frmStudent').find('#department_id').val();
                 var mentor_id = $('#mentor_id').val();

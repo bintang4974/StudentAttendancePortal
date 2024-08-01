@@ -43,6 +43,11 @@ class Student extends Authenticatable
         return $this->belongsTo(Department::class);
     }
 
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+    }
+
     public function mentor()
     {
         return $this->belongsTo(Mentor::class);

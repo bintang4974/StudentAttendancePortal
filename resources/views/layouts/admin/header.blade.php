@@ -107,6 +107,9 @@
                                     <a class="dropdown-item" href="/student">
                                         Data Mahasiswa
                                     </a>
+                                    <a class="dropdown-item" href="/department">
+                                        Data Department
+                                    </a>
 
                                     <div class="dropend">
                                         <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication"
