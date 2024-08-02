@@ -217,4 +217,22 @@ class AttendanceController extends Controller
             return redirect('/attendance/permission')->with(['error' => 'Data Gagal Disimpan!']);
         }
     }
+
+    public function monitoring()
+    {
+        return view('attendance.monitoring');
+    }
+
+    public function getattendance(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $attendance = DB::table('attendances')
+            ->select('attendances.*', 'students.activity_id as activity_id', 'students.name as name_student', 'departments.name as name_department')
+            ->join('students', 'attendances.student_id', '=', 'students.id')
+            ->join('departments', 'students.department_id', '=', 'departments.id')
+            ->where('date', $tanggal)
+            ->get();
+
+        return view('attendance.getattendance', compact('attendance'));
+    }
 }
