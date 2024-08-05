@@ -63,7 +63,7 @@
                                                         value="{{ Request('name_dept') }}">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-2">
                                                 <div class="form-group">
                                                     <button type="submit" class="btn btn-primary">
@@ -92,15 +92,59 @@
                                                 <th>No</th>
                                                 <th>Name</th>
                                                 <th>Head Department</th>
-                                                <th>Phone</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            
+                                            @foreach ($department as $item)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $item->name }}</td>
+                                                    <td>{{ $item->head_department }}</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <a href="#" class="edit btn btn-warning btn-sm"
+                                                                iddept="{{ $item->id }}">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                    <path
+                                                                        d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                                    <path
+                                                                        d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                                    <path d="M16 5l3 3" />
+                                                                </svg>
+                                                            </a>
+                                                            <form action="/department/{{ $item->id }}/delete"
+                                                                method="post" style="margin-left: 5px;">
+                                                                @csrf
+                                                                <a class="btn btn-danger btn-sm delete-confirm">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                                                        <path stroke="none" d="M0 0h24v24H0z"
+                                                                            fill="none" />
+                                                                        <path d="M4 7l16 0" />
+                                                                        <path d="M10 11l0 6" />
+                                                                        <path d="M14 11l0 6" />
+                                                                        <path
+                                                                            d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                                        <path
+                                                                            d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                                    </svg>
+                                                                </a>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
@@ -162,24 +206,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="input-icon mb-3">
-                                    <span class="input-icon-addon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-phone">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path
-                                                d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
-                                        </svg>
-                                    </span>
-                                    <input type="text" value="" name="phone" id="phone"
-                                        class="form-control" placeholder="phone">
-                                </div>
-                            </div>
-                        </div>
+
                         <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
                     </form>

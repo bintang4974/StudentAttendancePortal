@@ -69,4 +69,13 @@ Route::middleware(['auth:user'])->group(function () {
 
     // department
     Route::get('/department', [DepartmentController::class, 'index']);
+    Route::post('/department/store', [DepartmentController::class, 'store']);
+    Route::post('/department/edit', [DepartmentController::class, 'edit']);
+    Route::post('/department/{id}/update', [DepartmentController::class, 'update']);
+    Route::post('/department/{id}/delete', [DepartmentController::class, 'delete']);
+
+    // Monitoring Attendance
+    Route::get('/attendance/monitoring', [AttendanceController::class, 'monitoring']);
+    Route::post('/getattendance', [AttendanceController::class, 'getattendance']);
+    Route::post('/showmap', [AttendanceController::class, 'showmap']);
 });
