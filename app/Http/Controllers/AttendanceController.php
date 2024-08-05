@@ -235,4 +235,14 @@ class AttendanceController extends Controller
 
         return view('attendance.getattendance', compact('attendance'));
     }
+
+    public function showmap(Request $request)
+    {
+        $id = $request->id;
+        $attendance = DB::table('attendances')
+            ->where('attendances.id', $id)
+            ->join('students', 'attendances.student_id', '=', 'students.id')
+            ->first();
+        return view('attendance.showmap', compact('attendance'));
+    }
 }

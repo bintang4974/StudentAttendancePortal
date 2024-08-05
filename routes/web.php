@@ -77,4 +77,5 @@ Route::middleware(['auth:user'])->group(function () {
     // Monitoring Attendance
     Route::get('/attendance/monitoring', [AttendanceController::class, 'monitoring']);
     Route::post('/getattendance', [AttendanceController::class, 'getattendance']);
+    Route::post('/showmap', [AttendanceController::class, 'showmap']);
 });

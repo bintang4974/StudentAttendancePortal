@@ -44,8 +44,9 @@
                                                 <path d="M10.01 17h.005" />
                                             </svg>
                                         </span>
-                                        <input type="text" value="" class="form-control" id="tanggal"
-                                            name="tanggal" placeholder="Tanggal Kehadiran" autocomplete="off">
+                                        <input type="text" value="{{ date('Y-m-d') }}" class="form-control"
+                                            id="tanggal" name="tanggal" placeholder="Tanggal Kehadiran"
+                                            autocomplete="off">
                                     </div>
                                 </div>
                             </div>
@@ -63,6 +64,7 @@
                                                 <th>Time Out</th>
                                                 <th>Photo</th>
                                                 <th>Keterangan</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody id="loadattendance"></tbody>
@@ -71,6 +73,21 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Edit --}}
+    <div class="modal modal-blur fade" id="modal-showmap" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Location Attendance Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="loadmap">
+
                 </div>
             </div>
         </div>
@@ -86,8 +103,8 @@
                 format: 'yyyy-mm-dd'
             });
 
-            $('#tanggal').change(function() {
-                var tanggal = $(this).val()
+            function loadattendance() {
+                var tanggal = $('#tanggal').val()
                 $.ajax({
                     type: 'post',
                     url: '/getattendance',
@@ -100,6 +117,10 @@
                         $('#loadattendance').html(res)
                     }
                 })
+            }
+
+            $('#tanggal').change(function(e) {
+                loadattendance();
             })
         });
     </script>
