@@ -273,6 +273,7 @@ class AttendanceController extends Controller
             ->join('students', 'attendances.student_id', '=', 'students.id')
             ->whereRaw('MONTH(date)="' . $month . '"')
             ->whereRaw('YEAR(date)="' . $year . '"')
+            ->orderBy('attendances.date')
             ->get();
 
         return view('attendance.printreport', compact('month', 'year', 'namemonth', 'student', 'attendance'));
