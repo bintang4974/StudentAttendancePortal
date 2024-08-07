@@ -245,4 +245,36 @@ class AttendanceController extends Controller
             ->first();
         return view('attendance.showmap', compact('attendance'));
     }
+
+    public function report()
+    {
+        $namemonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $student = DB::table('students')->orderBy('name')->get();
+        return view('attendance.report', compact('namemonth', 'student'));
+    }
+
+    public function printreport(Request $request)
+    {
+        $student_id = $request->student_id;
+        $month = $request->month;
+        $year = $request->year;
+        $namemonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $student = DB::table('students')
+            ->select('students.*', 'positions.name as position_name', 'departments.name as department_name')
+            ->where('students.id', $student_id)
+            ->join('departments', 'students.department_id', '=', 'departments.id')
+            ->join('positions', 'students.position_id', '=', 'positions.id')
+            ->first();
+
+        // query menampilkan absensi user berdasarkan bulan yang dipilih
+        $attendance = DB::table('attendances')
+            ->select('attendances.*', 'students.activity_id as activity_id')
+            ->where('attendances.id', $student_id)
+            ->join('students', 'attendances.student_id', '=', 'students.id')
+            ->whereRaw('MONTH(date)="' . $month . '"')
+            ->whereRaw('YEAR(date)="' . $year . '"')
+            ->get();
+
+        return view('attendance.printreport', compact('month', 'year', 'namemonth', 'student', 'attendance'));
+    }
 }
