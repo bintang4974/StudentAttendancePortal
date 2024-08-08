@@ -80,4 +80,6 @@ Route::middleware(['auth:user'])->group(function () {
     Route::post('/showmap', [AttendanceController::class, 'showmap']);
     Route::get('/attendance/report', [AttendanceController::class, 'report']);
     Route::post('/attendance/printreport', [AttendanceController::class, 'printreport']);
+    Route::get('/attendance/recap', [AttendanceController::class, 'recap']);
+    Route::post('/attendance/printrecap', [AttendanceController::class, 'printrecap']);
 });
