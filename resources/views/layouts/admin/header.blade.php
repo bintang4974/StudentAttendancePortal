@@ -180,7 +180,7 @@
                                     <a class="dropdown-item" href="/attendance/report">
                                         Report Presensi
                                     </a>
-                                    <a class="dropdown-item" href="/department">
+                                    <a class="dropdown-item" href="/attendance/recap">
                                         Recap Presensi
                                     </a>
                                 </div>
