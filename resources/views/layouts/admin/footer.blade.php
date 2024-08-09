@@ -27,8 +27,8 @@
             <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 <ul class="list-inline list-inline-dots mb-0">
                     <li class="list-inline-item">
-                        Copyright &copy; 2024
-                        <a href="." class="link-secondary">Telkom University</a>.
+                        Supported by &copy; 2024
+                        <a href="https://surabaya.telkomuniversity.ac.id/" class="link-secondary">Telkom University</a>.
                         All rights reserved.
                     </li>
                     {{-- <li class="list-inline-item">
