@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
 use function Laravel\Prompts\alert;
+use function Laravel\Prompts\select;
 
 class AttendanceController extends Controller
 {
@@ -332,5 +333,46 @@ class AttendanceController extends Controller
 
         // dd($recap);
         return view('attendance.printrecap', compact('month', 'year', 'namemonth', 'recap'));
+    }
+
+    public function izinsakit()
+    {
+        $izinsakit = DB::table('permissions')
+            ->select('permissions.*', 'students.activity_id as activity_id', 'students.name as student_name', 'departments.name as dept_name', 'positions.name as position_name')
+            ->join('students', 'permissions.student_id', '=', 'students.id')
+            ->join('departments', 'students.department_id', '=', 'departments.id')
+            ->join('positions', 'students.position_id', '=', 'positions.id')
+            ->orderBy('date', 'desc')
+            ->get();
+
+        return view('attendance.izinsakit', compact('izinsakit'));
+    }
+
+    public function approvedizinsakit(Request $request)
+    {
+        $status_approved = $request->status_approved;
+        $id_izinsakit_form = $request->id_izinsakit_form;
+        $update = DB::table('permissions')->where('id', $id_izinsakit_form)->update([
+            'status_approved' => $status_approved
+        ]);
+
+        if ($update) {
+            return Redirect::back()->with(['success' => 'Success Update!']);
+        } else {
+            return Redirect::back()->with(['error' => 'Failed Update!']);
+        }
+    }
+
+    public function cancelizinsakit($id)
+    {
+        $update = DB::table('permissions')->where('id', $id)->update([
+            'status_approved' => 0
+        ]);
+
+        if ($update) {
+            return Redirect::back()->with(['success' => 'Success Update!']);
+        } else {
+            return Redirect::back()->with(['error' => 'Failed Update!']);
+        }
     }
 }

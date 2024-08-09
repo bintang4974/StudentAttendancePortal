@@ -82,4 +82,7 @@ Route::middleware(['auth:user'])->group(function () {
     Route::post('/attendance/printreport', [AttendanceController::class, 'printreport']);
     Route::get('/attendance/recap', [AttendanceController::class, 'recap']);
     Route::post('/attendance/printrecap', [AttendanceController::class, 'printrecap']);
+    Route::get('/attendance/izinsakit', [AttendanceController::class, 'izinsakit']);
+    Route::post('/attendance/approvedizinsakit', [AttendanceController::class, 'approvedizinsakit']);
+    Route::get('/attendance/{id}/cancelizinsakit', [AttendanceController::class, 'cancelizinsakit']);
 });
