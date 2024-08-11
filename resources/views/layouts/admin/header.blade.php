@@ -47,12 +47,8 @@
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <a href="#" class="dropdown-item">Status</a>
-                    <a href="./profile.html" class="dropdown-item">Profile</a>
-                    <a href="#" class="dropdown-item">Feedback</a>
-                    <div class="dropdown-divider"></div>
                     <a href="./settings.html" class="dropdown-item">Settings</a>
-                    <a href="./sign-in.html" class="dropdown-item">Logout</a>
+                    <a href="/processlogoutadmin" class="dropdown-item">Logout</a>
                 </div>
             </div>
         </div>
@@ -63,8 +59,8 @@
         <div class="navbar">
             <div class="container-xl">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="./">
+                    <li class="nav-item {{ request()->is('panel/dashboardadmin') ? 'active' : '' }}">
+                        <a class="nav-link" href="/panel/dashboardadmin">
                             <span
                                 class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -82,8 +78,9 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside" role="button" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle {{ request()->is(['student', 'department']) ? 'show' : '' }}"
+                            href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
+                            aria-expanded="{{ request()->is(['student', 'department']) ? 'true' : '' }}">
                             <span
                                 class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -101,36 +98,22 @@
                                 Data Master
                             </span>
                         </a>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu {{ request()->is(['student', 'department']) ? 'show' : '' }}">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    <a class="dropdown-item" href="/student">
+                                    <a class="dropdown-item {{ request()->is(['student']) ? 'active' : '' }}"
+                                        href="/student">
                                         Data Mahasiswa
                                     </a>
-                                    <a class="dropdown-item" href="/department">
+                                    <a class="dropdown-item {{ request()->is(['department']) ? 'active' : '' }}"
+                                        href="/department">
                                         Data Department
                                     </a>
-
-                                    <div class="dropend">
-                                        <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication"
-                                            data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
-                                            aria-expanded="false">
-                                            Authentication
-                                        </a>
-                                        <div class="dropdown-menu">
-                                            <a href="./sign-in.html" class="dropdown-item">
-                                                Sign in
-                                            </a>
-                                            <a href="./sign-in-link.html" class="dropdown-item">
-                                                Sign in link
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->is('attendance/monitoring') ? 'active' : '' }}">
                         <a class="nav-link" href="/attendance/monitoring">
                             <span
                                 class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -155,7 +138,7 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ request()->is('attendance/izinsakit') ? 'active' : '' }}">
                         <a class="nav-link" href="/attendance/izinsakit">
                             <span
                                 class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -181,8 +164,10 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside" role="button" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle {{ request()->is(['attendance/report', 'attendance/recap']) ? 'show' : '' }}"
+                            href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                            role="button"
+                            aria-expanded="{{ request()->is(['attendance/report', 'attendance/recap']) ? 'true' : '' }}">
                             <span
                                 class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -199,13 +184,16 @@
                                 Report
                             </span>
                         </a>
-                        <div class="dropdown-menu">
+                        <div
+                            class="dropdown-menu {{ request()->is(['attendance/report', 'attendance/recap']) ? 'show' : '' }}">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    <a class="dropdown-item" href="/attendance/report">
+                                    <a class="dropdown-item {{ request()->is(['attendance/report']) ? 'active' : '' }}"
+                                        href="/attendance/report">
                                         Report Presensi
                                     </a>
-                                    <a class="dropdown-item" href="/attendance/recap">
+                                    <a class="dropdown-item {{ request()->is(['attendance/recap']) ? 'active' : '' }}"
+                                        href="/attendance/recap">
                                         Recap Presensi
                                     </a>
                                 </div>
