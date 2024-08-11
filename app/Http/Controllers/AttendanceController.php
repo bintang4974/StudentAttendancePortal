@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -335,15 +336,28 @@ class AttendanceController extends Controller
         return view('attendance.printrecap', compact('month', 'year', 'namemonth', 'recap'));
     }
 
-    public function izinsakit()
+    public function izinsakit(Request $request)
     {
-        $izinsakit = DB::table('permissions')
-            ->select('permissions.*', 'students.activity_id as activity_id', 'students.name as student_name', 'departments.name as dept_name', 'positions.name as position_name')
-            ->join('students', 'permissions.student_id', '=', 'students.id')
-            ->join('departments', 'students.department_id', '=', 'departments.id')
-            ->join('positions', 'students.position_id', '=', 'positions.id')
-            ->orderBy('date', 'desc')
-            ->get();
+        $query = Permission::query();
+        $query->select('permissions.*', 'students.activity_id as activity_id', 'students.name as student_name', 'departments.name as dept_name', 'positions.name as position_name');
+        $query->join('students', 'permissions.student_id', '=', 'students.id');
+        $query->join('departments', 'students.department_id', '=', 'departments.id');
+        $query->join('positions', 'students.position_id', '=', 'positions.id');
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('date', [$request->dari, $request->sampai]);
+        }
+        if (!empty($request->activity_id)) {
+            $query->where('activity_id', $request->activity_id);
+        }
+        if (!empty($request->student_name)) {
+            $query->where('students.name', 'like', '%' . $request->student_name . '%');
+        }
+        if ($request->status_approved === "0" || $request->status_approved === "1" || $request->status_approved === "2") {
+            $query->where('status_approved', $request->status_approved);
+        }
+        $query->orderBy('date', 'desc');
+        $izinsakit = $query->paginate(2);
+        $izinsakit->appends($request->all());
 
         return view('attendance.izinsakit', compact('izinsakit'));
     }
