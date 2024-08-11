@@ -389,4 +389,12 @@ class AttendanceController extends Controller
             return Redirect::back()->with(['error' => 'Failed Update!']);
         }
     }
+
+    public function checkpermission(Request $request)
+    {
+        $date_permis = $request->date;
+        $student_id = Auth::guard('student')->user()->id;
+        $check = DB::table('permissions')->where('student_id', $student_id)->where('date', $date_permis)->count();
+        return $check;
+    }
 }

@@ -54,6 +54,7 @@ Route::middleware(['auth:student'])->group(function () {
     Route::get('/attendance/permission', [AttendanceController::class, 'permission']);
     Route::get('/attendance/creatpermission', [AttendanceController::class, 'creatpermission']);
     Route::post('/attendance/storepermission', [AttendanceController::class, 'storepermission']);
+    Route::post('/attendance/checkpermission', [AttendanceController::class, 'checkpermission']);
 });
 
 Route::middleware(['auth:user'])->group(function () {

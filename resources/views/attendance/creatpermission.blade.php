@@ -2,10 +2,11 @@
 @section('header')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <style>
-        .datepicker-modal{
+        .datepicker-modal {
             max-height: 430px !important;
         }
-        .datepicker-date-display{
+
+        .datepicker-date-display {
             background-color: #0f3a7e !important;
         }
     </style>
@@ -55,6 +56,31 @@
         $(document).ready(function() {
             $('.datepicker').datepicker({
                 format: "yyyy-mm-dd"
+            })
+
+            $("#date").change(function(e) {
+                var date_permis = $(this).val();
+                $.ajax({
+                    type: 'post',
+                    url: '/attendance/checkpermission',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        date: date_permis
+                    },
+                    cache: false,
+                    success: function(res) {
+                        // alert(res)
+                        if (res == 1) {
+                            Swal.fire({
+                                title: 'Oops!',
+                                text: 'Anda Sudah Melakukan Izin Pada Tanggal Tersebut!',
+                                icon: 'warning'
+                            }).then((res) => {
+                                $("#date").val("");
+                            })
+                        }
+                    }
+                });
             })
 
             $('#frmPermission').submit(function() {
