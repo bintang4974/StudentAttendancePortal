@@ -28,11 +28,11 @@
 
     <!-- App Capsule -->
     <div id="appCapsule" class="pt-0">
-
         <div class="login-form mt-1">
-            <div class="section">
+            <div class="section mt-3">
                 {{-- <img src="{{ asset('logo/pemkot.png') }}" style="width: 118px; height:165px;" alt="image" class="form-image"> --}}
-                <img src="{{ asset('logo/dinkop.png') }}" style="width: 180px; height:180px;" alt="image" class="form-image">
+                <img src="{{ asset('logo/dinkop.png') }}" style="width: 110px; height:110px; " alt="image" class="form-image">
+                <img src="{{ asset('logo/kampusmerdeka.png') }}" style="width: 80px; height:80px; margin-left: 10px; " alt="image" class="form-image">
             </div>
             <div class="section mt-1">
                 <h1>Student Attendance Portal</h1>
