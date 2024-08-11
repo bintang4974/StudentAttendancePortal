@@ -278,6 +278,13 @@ class AttendanceController extends Controller
             ->orderBy('attendances.date')
             ->get();
 
+        if (isset($_POST['exportexcel'])) {
+            $time = date('d-m-Y H:i:s');
+            header("content-type: application/vnd-ms-excel");
+            header("content-Disposition: attachment; filename=Laporan Presensi Mahasiswa $time.xls");
+            return view('attendance.printreportexcel', compact('month', 'year', 'namemonth', 'student', 'attendance'));
+        }
+
         return view('attendance.printreport', compact('month', 'year', 'namemonth', 'student', 'attendance'));
     }
 
@@ -331,8 +338,14 @@ class AttendanceController extends Controller
             ->whereRaw('YEAR(date)="' . $year . '"')
             ->groupByRaw('activity_id, student_name')
             ->get();
-
         // dd($recap);
+
+        if (isset($_POST['exportexcel'])) {
+            $time = date('d-m-Y H:i:s');
+            header("content-type: application/vnd-ms-excel");
+            header("content-Disposition: attachment; filename=Rekap Presensi $time.xls");
+        }
+
         return view('attendance.printrecap', compact('month', 'year', 'namemonth', 'recap'));
     }
 
