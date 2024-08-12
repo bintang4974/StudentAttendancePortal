@@ -271,12 +271,13 @@ class AttendanceController extends Controller
         // query menampilkan absensi user berdasarkan bulan yang dipilih
         $attendance = DB::table('attendances')
             ->select('attendances.*', 'students.activity_id as activity_id')
-            ->where('attendances.id', $student_id)
+            ->where('students.id', $student_id)
             ->join('students', 'attendances.student_id', '=', 'students.id')
             ->whereRaw('MONTH(date)="' . $month . '"')
             ->whereRaw('YEAR(date)="' . $year . '"')
             ->orderBy('attendances.date')
             ->get();
+        // dd($attendance);
 
         if (isset($_POST['exportexcel'])) {
             $time = date('d-m-Y H:i:s');

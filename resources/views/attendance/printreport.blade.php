@@ -25,7 +25,7 @@
         }
 
         .tabledatastudent {
-            margin-top: 40px;
+            margin-top: 5px;
         }
 
         .tabledatastudent td {
