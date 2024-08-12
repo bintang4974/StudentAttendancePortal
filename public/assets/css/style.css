@@ -428,6 +428,7 @@ button:focus {
   justify-content: center;
   border-radius: 200px;
   background: #1e74fd;
+  /* background: #95a5a6; */
 }
 
 .appBottomMenu .item .action-button.large {
@@ -7997,6 +7998,7 @@ body.dark-mode-active .cart-item .cart-item-footer {
 #user-section {
   height: 180px;
   background-color: #092c9f;
+  /* background-color: #95a5a6; */
   padding: 20px;
 }
 
