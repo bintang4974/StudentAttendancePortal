@@ -107,10 +107,10 @@
                 <?php } ?>
             </tr>
             @foreach ($recap as $item)
-            <tr>
-                <td>{{ $item->activity_id }}</td>
-                <td>{{ $item->student_name }}</td>
-                <?php
+                <tr>
+                    <td>{{ $item->activity_id }}</td>
+                    <td>{{ $item->student_name }}</td>
+                    <?php
                     $totalhadir = 0;
                     $totalterlambat = 0;
                     for ($i=1; $i <= 31; $i++) {
@@ -120,22 +120,85 @@
                             $totalhadir += 0;
                         }else{
                             $hadir = explode('-', $item->$tgl);
+                            if($hadir[0] != null && $hadir[1] == '00:00:00'){
+                                $totalhadir -= 1;
+                            }
                             $totalhadir += 1;
                             if($hadir[0] > '08:00:00'){
+                                if($hadir[0] != null && $hadir[1] == '00:00:00'){
+                                $totalterlambat -= 1;
+                            }
                                 $totalterlambat += 1;
                             }
                         }
                     ?>
-                <td>
-                    <span style="color: {{ $hadir[0] > '08:00:00' ? 'red' : '' }}">{{ $hadir[0] }}</span><br>
-                    <span style="color: {{ $hadir[1] < '16:00:00' ? 'red' : '' }}">{{ $hadir[1] }}</span>
-                </td>
-                <?php } ?>
-                <td>{{ $totalhadir }}</td>
-                <td>{{ $totalterlambat }}</td>
-            </tr>
+                    <td>
+                        @if ($hadir[0] != null && $hadir[1] == '00:00:00')
+                            <span style="color: red">Izin</span>
+                        @else
+                            <span style="color: {{ $hadir[0] > '08:00:00' ? 'red' : '' }}">{{ $hadir[0] }}</span><br>
+                            <span style="color: {{ $hadir[1] < '16:00:00' ? 'red' : '' }}">{{ $hadir[1] }}</span>
+                        @endif
+                    </td>
+                    <?php } ?>
+                    <td>{{ $totalhadir }}</td>
+                    <td>{{ $totalterlambat }}</td>
+                </tr>
             @endforeach
         </table>
+
+        {{-- <table class="tableattendance">
+            <tr>
+                <th rowspan="2">ID Activity</th>
+                <th rowspan="2">Nama Mahasiswa</th>
+                <th colspan="31">Tanggal</th>
+                <th rowspan="2">Total Hadir</th>
+                <th rowspan="2">Total Terlambat</th>
+            </tr>
+            <tr>
+                <?php for ($i = 1; $i <= 31; $i++) { ?>
+                    <th>{{ $i }}</th>
+                <?php } ?>
+            </tr>
+            @foreach ($recap as $item)
+                <tr>
+                    <td>{{ $item->activity_id }}</td>
+                    <td>{{ $item->student_name }}</td>
+                    <?php
+                    $totalhadir = 0;
+                    $totalterlambat = 0;
+                    for ($i = 1; $i <= 31; $i++) {
+                        $tgl = "tgl_" . $i;
+                        $izin = isset($item->permis_date) && $item->permis_date == $i; // Check if permission exists for this date
+        
+                        if ($izin) {
+                            $hadir = ['izin', 'izin'];
+                        } elseif (empty($item->$tgl)) {
+                            $hadir = ['', ''];
+                            $totalhadir += 0;
+                        } else {
+                            $hadir = explode('-', $item->$tgl);
+                            $totalhadir += 1;
+                            if ($hadir[0] > '08:00:00') {
+                                $totalterlambat += 1;
+                            }
+                        }
+                        ?>
+                        <td>
+                            @if ($izin)
+                                Izin
+                            @else
+                                <span style="color: {{ $hadir[0] > '08:00:00' ? 'red' : '' }}">{{ $hadir[0] }}</span><br>
+                                <span style="color: {{ $hadir[1] < '16:00:00' ? 'red' : '' }}">{{ $hadir[1] }}</span>
+                            @endif
+                        </td>
+                    <?php } ?>
+                    <td>{{ $totalhadir }}</td>
+                    <td>{{ $totalterlambat }}</td>
+                </tr>
+            @endforeach
+        </table> --}}
+
 
         <table width="100%" style="margin-top: 50px;">
             <tr>
