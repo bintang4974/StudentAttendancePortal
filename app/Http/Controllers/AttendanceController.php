@@ -203,6 +203,7 @@ class AttendanceController extends Controller
         $status = $request->status;
         $description = $request->description;
         $status_approved = 0;
+        $time = date('H:i:s');
 
         $data = [
             'student_id' => $student_id,
@@ -211,9 +212,20 @@ class AttendanceController extends Controller
             'description' => $description,
             'status_approved' => $status_approved,
         ];
+        $dataAtt = [
+            'student_id' => $student_id,
+            'date' => $request->date,
+            'time_in' => $time,
+            'time_out' => null,
+            'photo_in' => null,
+            'photo_out' => null,
+            'location_in' => null,
+            'location_out' => null,
+        ];
 
+        $saveAtt = DB::table('attendances')->insert($dataAtt);
         $save = DB::table('permissions')->insert($data);
-        if ($save) {
+        if ($save && $saveAtt) {
             return redirect('/attendance/permission')->with(['success' => 'Data Berhasil Disimpan!']);
         } else {
             return redirect('/attendance/permission')->with(['error' => 'Data Gagal Disimpan!']);
@@ -270,11 +282,15 @@ class AttendanceController extends Controller
 
         // query menampilkan absensi user berdasarkan bulan yang dipilih
         $attendance = DB::table('attendances')
-            ->select('attendances.*', 'students.activity_id as activity_id')
+            ->select('attendances.*', 'students.activity_id as activity_id', 'permissions.date as permis_date')
             ->where('students.id', $student_id)
             ->join('students', 'attendances.student_id', '=', 'students.id')
-            ->whereRaw('MONTH(date)="' . $month . '"')
-            ->whereRaw('YEAR(date)="' . $year . '"')
+            ->leftJoin('permissions', function ($join) {
+                $join->on('students.id', '=', 'permissions.student_id')
+                    ->whereRaw('permissions.date = attendances.date');
+            })
+            ->whereRaw('MONTH(attendances.date)="' . $month . '"')
+            ->whereRaw('YEAR(attendances.date)="' . $year . '"')
             ->orderBy('attendances.date')
             ->get();
         // dd($attendance);
@@ -303,40 +319,45 @@ class AttendanceController extends Controller
         $namemonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         $recap = DB::table('attendances')
             ->selectRaw('students.activity_id AS activity_id, students.name AS student_name, 
-                MAX(IF(DAY(date) = 1, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_1,
-                MAX(IF(DAY(date) = 2, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_2,
-                MAX(IF(DAY(date) = 3, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_3,
-                MAX(IF(DAY(date) = 4, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_4,
-                MAX(IF(DAY(date) = 5, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_5,
-                MAX(IF(DAY(date) = 6, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_6,
-                MAX(IF(DAY(date) = 7, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_7,
-                MAX(IF(DAY(date) = 8, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_8,
-                MAX(IF(DAY(date) = 9, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_9,
-                MAX(IF(DAY(date) = 10, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_10,
-                MAX(IF(DAY(date) = 11, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_11,
-                MAX(IF(DAY(date) = 12, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_12,
-                MAX(IF(DAY(date) = 13, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_13,
-                MAX(IF(DAY(date) = 14, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_14,
-                MAX(IF(DAY(date) = 15, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_15,
-                MAX(IF(DAY(date) = 16, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_16,
-                MAX(IF(DAY(date) = 17, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_17,
-                MAX(IF(DAY(date) = 18, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_18,
-                MAX(IF(DAY(date) = 19, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_19,
-                MAX(IF(DAY(date) = 20, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_20,
-                MAX(IF(DAY(date) = 21, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_21,
-                MAX(IF(DAY(date) = 22, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_22,
-                MAX(IF(DAY(date) = 23, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_23,
-                MAX(IF(DAY(date) = 24, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_24,
-                MAX(IF(DAY(date) = 25, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_25,
-                MAX(IF(DAY(date) = 26, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_26,
-                MAX(IF(DAY(date) = 27, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_27,
-                MAX(IF(DAY(date) = 28, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_28,
-                MAX(IF(DAY(date) = 29, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_29,
-                MAX(IF(DAY(date) = 30, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_30,
-                MAX(IF(DAY(date) = 31, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_31')
+                MAX(IF(DAY(attendances.date) = 1, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_1,
+                MAX(IF(DAY(attendances.date) = 2, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_2,
+                MAX(IF(DAY(attendances.date) = 3, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_3,
+                MAX(IF(DAY(attendances.date) = 4, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_4,
+                MAX(IF(DAY(attendances.date) = 5, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_5,
+                MAX(IF(DAY(attendances.date) = 6, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_6,
+                MAX(IF(DAY(attendances.date) = 7, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_7,
+                MAX(IF(DAY(attendances.date) = 8, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_8,
+                MAX(IF(DAY(attendances.date) = 9, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_9,
+                MAX(IF(DAY(attendances.date) = 10, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_10,
+                MAX(IF(DAY(attendances.date) = 11, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_11,
+                MAX(IF(DAY(attendances.date) = 12, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_12,
+                MAX(IF(DAY(attendances.date) = 13, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_13,
+                MAX(IF(DAY(attendances.date) = 14, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_14,
+                MAX(IF(DAY(attendances.date) = 15, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_15,
+                MAX(IF(DAY(attendances.date) = 16, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_16,
+                MAX(IF(DAY(attendances.date) = 17, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_17,
+                MAX(IF(DAY(attendances.date) = 18, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_18,
+                MAX(IF(DAY(attendances.date) = 19, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_19,
+                MAX(IF(DAY(attendances.date) = 20, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_20,
+                MAX(IF(DAY(attendances.date) = 21, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_21,
+                MAX(IF(DAY(attendances.date) = 22, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_22,
+                MAX(IF(DAY(attendances.date) = 23, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_23,
+                MAX(IF(DAY(attendances.date) = 24, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_24,
+                MAX(IF(DAY(attendances.date) = 25, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_25,
+                MAX(IF(DAY(attendances.date) = 26, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_26,
+                MAX(IF(DAY(attendances.date) = 27, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_27,
+                MAX(IF(DAY(attendances.date) = 28, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_28,
+                MAX(IF(DAY(attendances.date) = 29, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_29,
+                MAX(IF(DAY(attendances.date) = 30, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_30,
+                MAX(IF(DAY(attendances.date) = 31, CONCAT(time_in,"-",IFNULL(time_out,"00:00:00")),"")) AS tgl_31')
+            // ->select('attendances.*')
             ->join('students', 'attendances.student_id', '=', 'students.id')
-            ->whereRaw('MONTH(date)="' . $month . '"')
-            ->whereRaw('YEAR(date)="' . $year . '"')
+            ->leftJoin('permissions', function ($join) {
+                $join->on('students.id', '=', 'permissions.student_id')
+                    ->whereRaw('permissions.date = attendances.date');
+            })
+            ->whereRaw('MONTH(attendances.date)="' . $month . '"')
+            ->whereRaw('YEAR(attendances.date)="' . $year . '"')
             ->groupByRaw('activity_id, student_name')
             ->get();
         // dd($recap);
@@ -370,7 +391,7 @@ class AttendanceController extends Controller
             $query->where('status_approved', $request->status_approved);
         }
         $query->orderBy('date', 'desc');
-        $izinsakit = $query->paginate(2);
+        $izinsakit = $query->paginate(10);
         $izinsakit->appends($request->all());
 
         return view('attendance.izinsakit', compact('izinsakit'));

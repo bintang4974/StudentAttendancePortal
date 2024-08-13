@@ -135,6 +135,7 @@
                 <td>{{ $student->placement }}</td>
             </tr>
         </table>
+
         <table class="tableattendance">
             <tr>
                 <th>No.</th>
@@ -152,40 +153,46 @@
                     $path_in = Storage::url('uploads/absensi/' . $item->photo_in);
                     $path_out = Storage::url('uploads/absensi/' . $item->photo_out);
                     $late = selisih('08:00:00', $item->time_in);
+                    $izin = !is_null($item->permis_date) && $item->permis_date == $item->date;
                 @endphp
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ date('d-m-Y', strtotime($item->date)) }}</td>
-                    <td>{{ $item->activity_id }}</td>
-                    <td>{{ $item->time_in }}</td>
-                    <td><img src="{{ url($path_in) }}" class="photo"></td>
-                    <td>{{ $item->time_out != null ? $item->time_out : 'Belum Absen!' }}</td>
-                    <td>
-                        @if ($item->time_out != null)
-                            <img src="{{ url($path_out) }}" class="photo">
-                        @else
-                            No Photo
-                        @endif
-                    </td>
-                    <td>
-                        @if ($item->time_in > '08:00')
-                            Terlambat! {{ $late }}
-                        @else
-                            Tepat Waktu!
-                        @endif
-                    </td>
-                    <td>
-                        @if ($item->time_out != null)
-                            @php
-                                $jmljamkerja = selisih($item->time_in, $item->time_out);
-                            @endphp
-                        @else
-                            @php
-                                $jmljamkerja = 0;
-                            @endphp
-                        @endif
-                        {{ $jmljamkerja }}
-                    </td>
+                    @if ($izin)
+                        <td colspan="6" style="color: red; text-align:center">Izin</td>
+                        <td>-</td>
+                    @else
+                        <td>{{ $item->activity_id }}</td>
+                        <td>{{ $item->time_in }}</td>
+                        <td><img src="{{ url($path_in) }}" class="photo"></td>
+                        <td>{{ $item->time_out != null ? $item->time_out : 'Belum Absen!' }}</td>
+                        <td>
+                            @if ($item->time_out != null)
+                                <img src="{{ url($path_out) }}" class="photo">
+                            @else
+                                No Photo
+                            @endif
+                        </td>
+                        <td>
+                            @if ($item->time_in > '08:00')
+                                Terlambat! {{ $late }}
+                            @else
+                                Tepat Waktu!
+                            @endif
+                        </td>
+                        <td>
+                            @if ($item->time_out != null)
+                                @php
+                                    $jmljamkerja = selisih($item->time_in, $item->time_out);
+                                @endphp
+                            @else
+                                @php
+                                    $jmljamkerja = 0;
+                                @endphp
+                            @endif
+                            {{ $jmljamkerja }}
+                        </td>
+                    @endif
                 </tr>
             @endforeach
         </table>
