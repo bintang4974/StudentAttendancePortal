@@ -7,6 +7,7 @@ use App\Models\Mentor;
 use App\Models\Position;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -16,16 +17,29 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Student::query();
-        $query->select('students.*', 'departments.name as name_department');
-        $query->join('departments', 'students.department_id', '=', 'departments.id',);
-        $query->orderBy('name');
+        $user = Auth::user();
+
+        $query = Student::with('department');
+
+        // Jika user adalah mentor → tampilkan mahasiswa yang dibimbingnya
+        if ($user->role === 'mentor') {
+            $mentor = Mentor::where('user_id', $user->id)->first();
+            $query->where('mentor_id', $mentor->id);
+        }
+
+        // $query = Student::query();
+        // $query->select('students.*', 'departments.name as name_department');
+        // $query->join('departments', 'students.department_id', '=', 'departments.id',);
+        // $query->orderBy('name');
+
         if (!empty($request->name_student)) {
             $query->where('students.name', 'like', '%' . $request->name_student . '%');
         }
+
         if (!empty($request->name_dept)) {
             $query->where('departments.name', $request->name_dept);
         }
+
         $student = $query->paginate(10);
         $department = Department::all();
         $mentor = Mentor::all();
@@ -87,7 +101,7 @@ class StudentController extends Controller
 
     public function update(Request $request)
     {
-        
+
         $id = $request->id;
         $nim = $request->nim;
         $old_photo = $request->old_photo;

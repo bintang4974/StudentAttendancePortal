@@ -2,6 +2,9 @@
 
 @section('content')
     <div class="section" id="user-section">
+        <span id="user-role">Supported by &copy; 2024
+            <a href="https://surabaya.telkomuniversity.ac.id/" class="link-secondary">Telkom University</a>
+        </span>
         <div id="user-detail">
             <div class="avatar">
                 @if (!empty(Auth::guard('student')->user()->photo))
@@ -204,8 +207,10 @@
                                     <div class="in">
                                         <div>{{ date('d-m-Y', strtotime($history->date)) }}</div>
                                         <span class="badge badge-success">{{ $history->time_in }}</span>
+                                        {{-- <span
+                                            class="badge badge-danger">{{ $attendanceToday != null && $attendanceToday->time_out != null ? $history->time_out : 'Belum Absen' }}</span> --}}
                                         <span
-                                            class="badge badge-danger">{{ $attendanceToday != null && $attendanceToday->time_out != null ? $history->time_out : 'Belum Absen' }}</span>
+                                            class="badge badge-danger">{{ $history->time_out }}</span>
                                     </div>
                                 </div>
                             </li>

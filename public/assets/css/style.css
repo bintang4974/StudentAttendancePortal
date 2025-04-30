@@ -7996,7 +7996,7 @@ body.dark-mode-active .cart-item .cart-item-footer {
 }
 
 #user-section {
-  height: 180px;
+  height: 220px;
   background-color: #092c9f;
   /* background-color: #95a5a6; */
   padding: 20px;
@@ -8021,7 +8021,7 @@ body.dark-mode-active .cart-item .cart-item-footer {
 #menu-section {
   position: absolute;
   width: 100%;
-  top: 120px;
+  top: 140px;
   z-index: 999;
 }
 
@@ -8032,7 +8032,7 @@ body.dark-mode-active .cart-item .cart-item-footer {
 
 #presence-section {
   position: absolute;
-  top: 150px;
+  top: 170px;
   width: 100%;
   background-color: #e9ecef;
   border-radius: 10px 10px 0px 0px;

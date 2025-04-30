@@ -1,7 +1,7 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 @section('header')
     <!-- App Header -->
-    <div class="appHeader bg-primary text-light">
+    {{-- <div class="appHeader bg-primary text-light">
         <div class="left">
             <a href="javascript:;" class="headerButton goBack">
                 <ion-icon name="chevron-back-outline"></ion-icon>
@@ -9,8 +9,20 @@
         </div>
         <div class="pageTitle">Attendance</div>
         <div class="right"></div>
-    </div>
+    </div> --}}
     <!-- * App Header -->
+    <div class="header-large-title">
+        <div class="row">
+            <div class="col align-self-center">
+                <a href="javascript:;" class="headerButton goBack text-center">
+                    <ion-icon name="chevron-back-outline" style="font-size: 32px; color: white;"></ion-icon>
+                </a>
+            </div>
+            <div class="col">
+                <h1 class="title text-center" style="margin-left: -160px">Presensi</h1>
+            </div>
+        </div>
+    </div>
 @endsection
 
 <style>
@@ -32,7 +44,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 @section('content')
-    <div class="row" style="margin-top: 70px">
+    <div class="row" style="margin-top: 10px">
         <div class="col">
             <input type="hidden" id="location">
             <div class="webcam-capture"></div>

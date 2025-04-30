@@ -1,6 +1,6 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 @section('header')
-    <div class="appHeader bg-primary text-light">
+    {{-- <div class="appHeader bg-primary text-light">
         <div class="left">
             <a href="javascript:;" class="headerButton goBack">
                 <ion-icon name="chevron-back-outline"></ion-icon>
@@ -8,11 +8,23 @@
         </div>
         <div class="pageTitle">Edit Profile</div>
         <div class="right"></div>
+    </div> --}}
+    <div class="header-large-title">
+        <div class="row">
+            <div class="col align-self-center">
+                <a href="javascript:;" class="headerButton goBack text-center">
+                    <ion-icon name="chevron-back-outline" style="font-size: 32px; color: white;"></ion-icon>
+                </a>
+            </div>
+            <div class="col">
+                <h1 class="title text-center" style="margin-left: -160px">Profile</h1>
+            </div>
+        </div>
     </div>
 @endsection
 
 @section('content')
-    <div class="row" style="margin-top: 4rem;">
+    <div class="row" style="margin-top: 0.3rem;">
         <div class="col">
             @php
                 $messagesuccess = Session::get('success');
@@ -78,7 +90,7 @@
             </div>
         </div>
     </form>
-    <div class="row" style="margin-bottom: 2rem;">
+    <div class="row" style="margin-bottom: 4rem;">
         <div class="col mb-5 text-center">
             <a href="/processlogout" class="btn btn-danger w-50 btn-block">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

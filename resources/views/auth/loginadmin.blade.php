@@ -31,6 +31,23 @@
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
         }
+        
+        @media (max-width: 991.98px) {
+            .mobile-logo {
+                display: block;
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+            .mobile-logo img {
+                height: 80px;
+                width: auto;
+            }
+        }
+        @media (min-width: 992px) {
+            .mobile-logo {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -38,6 +55,9 @@
     <script src="{{ asset('tabler/dist/js/demo-theme.min.js?1692870487') }}"></script>
     <div class="page page-center">
         <div class="container container-normal py-4">
+            <div class="mobile-logo">
+                <img src="{{ asset('logo/dinkop.png') }}" alt="Logo">
+            </div>
             <div class="row align-items-center g-4">
                 <div class="col-lg">
                     <div class="container-tight">
