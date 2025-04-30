@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mentor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -56,16 +57,51 @@ class DashboardController extends Controller
     public function dashboardadmin()
     {
         $today = date('Y-m-d');
-        $recapAttendance = DB::table('attendances')
-            ->selectRaw('COUNT(student_id) as jmlhadir, SUM(IF(time_in > "08:00",1,0)) as jmlterlambat')
+        $user = Auth::user();
+        $mentorId = Mentor::where('user_id', $user->id)->value('id');
+
+        // Query dasar untuk admin (tampilkan semua data)
+        $attendanceQuery = DB::table('attendances')
+            ->where('date', $today);
+
+        $permissionQuery = DB::table('permissions')
             ->where('date', $today)
+            ->where('status_approved', 1);
+
+        // Jika role adalah mentor, filter berdasarkan mahasiswa bimbingannya
+        if ($user->role === 'mentor') {
+            $attendanceQuery->whereIn('student_id', function ($query) use ($mentorId) {
+                $query->select('id')
+                    ->from('students')
+                    ->where('mentor_id', $mentorId); // Mengarah ke mentors.id
+            });
+
+            $permissionQuery->whereIn('student_id', function ($query) use ($mentorId) {
+                $query->select('id')
+                    ->from('students')
+                    ->where('mentor_id', $mentorId); // Mengarah ke mentors.id
+            });
+        }
+
+        // Eksekusi query
+        $recapAttendance = $attendanceQuery
+            ->selectRaw('COUNT(student_id) as jmlhadir, SUM(IF(time_in > "08:00",1,0)) as jmlterlambat')
             ->first();
 
-        $recappermission = DB::table('permissions')
+        $recappermission = $permissionQuery
             ->selectRaw('SUM(IF(status="i",1,0)) as amountpermis, SUM(IF(status="s",1,0)) as amountsick')
-            ->where('date', $today)
-            ->where('status_approved', 1)
             ->first();
+
+        // $recapAttendance = DB::table('attendances')
+        //     ->selectRaw('COUNT(student_id) as jmlhadir, SUM(IF(time_in > "08:00",1,0)) as jmlterlambat')
+        //     ->where('date', $today)
+        //     ->first();
+
+        // $recappermission = DB::table('permissions')
+        //     ->selectRaw('SUM(IF(status="i",1,0)) as amountpermis, SUM(IF(status="s",1,0)) as amountsick')
+        //     ->where('date', $today)
+        //     ->where('status_approved', 1)
+        //     ->first();
 
         return view('dashboard.dashboardadmin', compact('recapAttendance', 'recappermission'));
     }
