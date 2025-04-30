@@ -15,16 +15,19 @@ class MentorSeeder extends Seeder
     {
         DB::table('mentors')->insert([
             [
-                'name' => 'Bintang Ramadhan',
-                'phone' => '081723987784'
+                'name' => 'Daniel',
+                'phone' => '081723987784',
+                'user_id' => 2
             ],
             [
                 'name' => 'Ratih Fibrina',
-                'phone' => '081709172893'
+                'phone' => '081709172893',
+                'user_id' => 3
             ],
             [
                 'name' => 'Lasniar Megawati',
-                'phone' => '081846570923'
+                'phone' => '081846570923',
+                'user_id' => 4
             ],
         ]);
     }

@@ -20,7 +20,7 @@ class DashboardController extends Controller
             ->where('student_id', $student_id)
             ->whereRaw('MONTH(date)="' . $thisMonth . '"')
             ->whereRaw('YEAR(date)="' . $thisYear . '"')
-            ->orderBy('date')
+            ->orderBy('date', 'desc')
             ->get();
         // dd($historyThisMonth);
 
@@ -50,7 +50,7 @@ class DashboardController extends Controller
             ->whereRaw('YEAR(date)="' . $thisYear . '"')
             ->where('status_approved', 1)
             ->first();
-        return view('dashboard.dashboard', compact('attendanceToday', 'historyThisMonth', 'nameMonth', 'thisMonth', 'thisYear', 'recapAttendance', 'leaderboard', 'recappermission'));
+        return view('dashboard.dashboard2', compact('attendanceToday', 'historyThisMonth', 'nameMonth', 'thisMonth', 'thisYear', 'recapAttendance', 'leaderboard', 'recappermission'));
     }
 
     public function dashboardadmin()

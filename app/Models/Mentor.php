@@ -8,9 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Mentor extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     public function students()
     {
         return $this->hasMany(Student::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -10,10 +10,8 @@ class AuthController extends Controller
 {
     public function processlogin(Request $request)
     {
-        // $pass = 12345678;
-        // echo Hash::make($pass);
         if (Auth::guard('student')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect('/dashboard');
+            return redirect()->intended('/dashboard');
         } else {
             return redirect('/')->with(['warning' => 'email/pass salah!']);
         }

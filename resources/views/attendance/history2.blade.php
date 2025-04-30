@@ -1,21 +1,18 @@
 @extends('layouts.master2')
 @section('header')
-    <div class="header-large-title">
-        <div class="row">
-            <div class="col align-self-center">
-                <a href="javascript:;" class="headerButton goBack text-center">
-                    <ion-icon name="chevron-back-outline" style="font-size: 32px; color: white;"></ion-icon>
-                </a>
-            </div>
-            <div class="col">
-                <h1 class="title text-center" style="margin-left: -160px">History</h1>
-            </div>
+    <div class="appHeader bg-primary text-light">
+        <div class="left">
+            <a href="javascript:;" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
         </div>
+        <div class="pageTitle">History</div>
+        <div class="right"></div>
     </div>
 @endsection
 
 @section('content')
-    <div class="row" style="margin-top: 20px">
+    <div class="row" style="margin-top: 70px">
         <div class="col">
             <div class="row">
                 <div class="col-12">
@@ -67,16 +64,16 @@
 
 @push('myscript')
     <script>
-        $(function() {
-            $('#getdata').click(function(e) {
+        $(function(){
+            $('#getdata').click(function(e){
                 var month = $('#month').val();
                 var year = $('#year').val();
-
+                
                 $.ajax({
                     type: 'POST',
                     url: '/gethistory',
                     data: {
-                        _token: "{{ csrf_token() }}",
+                        _token: "{{csrf_token()}}",
                         month: month,
                         year: year
                     },
