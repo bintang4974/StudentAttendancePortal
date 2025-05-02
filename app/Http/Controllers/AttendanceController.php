@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Mentor;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -234,18 +235,43 @@ class AttendanceController extends Controller
 
     public function monitoring()
     {
+        $user = Auth::user();
+
+        $query = DB::table('students')
+            ->join('departments', 'students.department_id', '=', 'departments.id')
+            ->select('students.*', 'departments.name as name_department');
+
+        if ($user->role == 'mentor') {
+            $mentor = Mentor::where('user_id', $user->id)->first();
+            if ($mentor) {
+                $query->where('students.mentor_id', $mentor->id);
+            }
+        }
+
+        $query->get();
+
         return view('attendance.monitoring');
     }
 
     public function getattendance(Request $request)
     {
         $tanggal = $request->tanggal;
-        $attendance = DB::table('attendances')
+        $user = Auth::user();
+
+        $query = DB::table('attendances')
             ->select('attendances.*', 'students.activity_id as activity_id', 'students.name as name_student', 'departments.name as name_department')
             ->join('students', 'attendances.student_id', '=', 'students.id')
             ->join('departments', 'students.department_id', '=', 'departments.id')
-            ->where('date', $tanggal)
-            ->get();
+            ->where('date', $tanggal);
+
+        if ($user->role == 'mentor') {
+            $mentor = Mentor::where('user_id', $user->id)->first();
+            if ($mentor) {
+                $query->where('students.mentor_id', $mentor->id);
+            }
+        }
+
+        $attendance = $query->get();
 
         return view('attendance.getattendance', compact('attendance'));
     }
