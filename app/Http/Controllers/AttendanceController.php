@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Evidence;
 use App\Models\Mentor;
 use App\Models\Permission;
+use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -233,6 +236,83 @@ class AttendanceController extends Controller
         }
     }
 
+    public function evidence()
+    {
+        return view('attendance.evidence');
+    }
+
+    public function storeevidence(Request $request)
+    {
+        $request->validate([
+            'description' => 'required|string',
+            'file' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png',
+        ]);
+
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $filePath = $request->file('file')->store('evidences', 'public');
+        }
+
+        Evidence::create([
+            'student_id' => Auth::guard('student')->user()->id,
+            'description' => $request->description,
+            'file_path' => $filePath,
+        ]);
+
+        return redirect('/dashboard');
+        // return redirect()->route('/dashboard')->with('success', 'Evidence submitted successfully!');
+    }
+
+    public function historyevidence(Request $request)
+    {
+        $studentId = Auth::guard('student')->id();
+
+        // Ambil bulan yang dipilih atau default ke bulan sekarang
+        $month = $request->get('month', now()->format('Y-m'));
+
+        // Ambil evidence hanya untuk bulan yang dipilih
+        $evidences = Evidence::where('student_id', $studentId)
+            ->whereMonth('created_at', Carbon::parse($month)->format('m'))
+            ->whereYear('created_at', Carbon::parse($month)->format('Y'))
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('attendance.historyevidence', compact('evidences', 'month'));
+    }
+
+    public function getevidence(Request $request)
+    {
+        $user = auth()->guard('user')->user();
+        
+        $month = $request->get('month', now()->format('Y-m'));
+
+        // Cek role user
+        if ($user->role === 'user') {
+            // Admin melihat semua evidence
+            $evidences = Evidence::with('student')
+                ->whereMonth('created_at', Carbon::parse($month)->format('m'))
+                ->whereYear('created_at', Carbon::parse($month)->format('Y'))
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } elseif ($user->role === 'mentor') {
+            $mentorId = Mentor::where('user_id', $user->id)->value('id');
+            // Mentor hanya melihat mahasiswa bimbingannya
+            $studentIds = Student::where('mentor_id', $mentorId)->pluck('id');
+
+            $evidences = Evidence::with('student')
+                ->whereIn('student_id', $studentIds)
+                ->whereMonth('created_at', Carbon::parse($month)->format('m'))
+                ->whereYear('created_at', Carbon::parse($month)->format('Y'))
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            // Role lain tidak diizinkan
+            abort(403, 'Unauthorized');
+        }
+
+        return view('attendance.getevidence', compact('evidences', 'month'));
+    }
+
     public function monitoring()
     {
         $user = Auth::user();
@@ -288,17 +368,44 @@ class AttendanceController extends Controller
 
     public function report()
     {
+        // dd(auth()->guard('user')->user()->role);
         $namemonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        $student = DB::table('students')->orderBy('name')->get();
+
+        $user = auth()->guard('user')->user();
+
+        if ($user->role === 'mentor') {
+            // Ambil ID mentor dari tabel mentors berdasarkan user_id
+            $mentor = DB::table('mentors')->where('user_id', $user->id)->first();
+
+            // Ambil mahasiswa yang dibimbing oleh mentor tersebut
+            $student = DB::table('students')
+                ->where('mentor_id', $mentor->id)
+                ->orderBy('name')
+                ->get();
+        } else {
+            // Admin melihat semua mahasiswa
+            $student = DB::table('students')->orderBy('name')->get();
+        }
+
         return view('attendance.report', compact('namemonth', 'student'));
     }
 
     public function printreport(Request $request)
     {
+        $user = Auth::user();
         $student_id = $request->student_id;
         $month = $request->month;
         $year = $request->year;
         $namemonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+        if ($user->role == 'mentor') {
+            $mentor = \App\Models\Mentor::where('user_id', $user->id)->first();
+            $check = DB::table('students')->where('id', $student_id)->where('mentor_id', $mentor->id)->first();
+            if (!$check) {
+                abort(403, 'Anda tidak memiliki akses ke data ini');
+            }
+        }
+
         $student = DB::table('students')
             ->select('students.*', 'positions.name as position_name', 'departments.name as department_name')
             ->where('students.id', $student_id)
@@ -399,11 +506,21 @@ class AttendanceController extends Controller
 
     public function izinsakit(Request $request)
     {
+        $user = Auth::user();
+        // dd(auth()->guard('user')->user()->role);
         $query = Permission::query();
         $query->select('permissions.*', 'students.activity_id as activity_id', 'students.name as student_name', 'departments.name as dept_name', 'positions.name as position_name');
         $query->join('students', 'permissions.student_id', '=', 'students.id');
         $query->join('departments', 'students.department_id', '=', 'departments.id');
         $query->join('positions', 'students.position_id', '=', 'positions.id');
+
+        if ($user->role == 'mentor') {
+            $mentor = Mentor::where('user_id', $user->id)->first();
+            if ($mentor) {
+                $query->where('students.mentor_id', $mentor->id);
+            }
+        }
+
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('date', [$request->dari, $request->sampai]);
         }

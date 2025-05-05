@@ -55,6 +55,11 @@ Route::middleware(['auth:student'])->group(function () {
     Route::get('/attendance/creatpermission', [AttendanceController::class, 'creatpermission']);
     Route::post('/attendance/storepermission', [AttendanceController::class, 'storepermission']);
     Route::post('/attendance/checkpermission', [AttendanceController::class, 'checkpermission']);
+
+    // evidence
+    Route::get('/attendance/createevidence', [AttendanceController::class, 'evidence'])->name('create.evidence');
+    Route::post('/attendance/storeevidence', [AttendanceController::class, 'storeevidence'])->name('store.evidence');
+    Route::get('/attendance/historyevidence', [AttendanceController::class, 'historyevidence'])->name('history.evidence');
 });
 
 Route::middleware(['auth:user'])->group(function () {
@@ -86,4 +91,7 @@ Route::middleware(['auth:user'])->group(function () {
     Route::get('/attendance/izinsakit', [AttendanceController::class, 'izinsakit']);
     Route::post('/attendance/approvedizinsakit', [AttendanceController::class, 'approvedizinsakit']);
     Route::get('/attendance/{id}/cancelizinsakit', [AttendanceController::class, 'cancelizinsakit']);
+
+    // evidence
+    Route::get('evidence', [AttendanceController::class, 'getevidence'])->name('getevidence');
 });

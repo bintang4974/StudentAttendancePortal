@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master2')
 @section('header')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <style>
@@ -10,7 +10,7 @@
             background-color: #0f3a7e !important;
         }
     </style>
-    <div class="appHeader bg-primary text-light">
+    {{-- <div class="appHeader bg-primary text-light">
         <div class="left">
             <a href="javascript:;" class="headerButton goBack">
                 <ion-icon name="chevron-back-outline"></ion-icon>
@@ -18,11 +18,23 @@
         </div>
         <div class="pageTitle">Form Permission</div>
         <div class="right"></div>
+    </div> --}}
+    <div class="header-large-title">
+        <div class="row">
+            <div class="col align-self-center">
+                <a href="javascript:;" class="headerButton goBack text-center">
+                    <ion-icon name="chevron-back-outline" style="font-size: 32px; color: white;"></ion-icon>
+                </a>
+            </div>
+            <div class="col">
+                <h1 class="title text-center" style="margin-left: -160px">Permission</h1>
+            </div>
+        </div>
     </div>
 @endsection
 
 @section('content')
-    <div class="row" style="margin-top: 70px">
+    <div class="row" style="margin-top: 10px">
         <div class="col">
             <form action="/attendance/storepermission" method="post" id="frmPermission">
                 @csrf

@@ -29,27 +29,6 @@ class RedirectIfAuthenticated
             }
         }
 
-        // foreach ($guards as $guard) {
-        //     if (Auth::guard($guard)->check()) {
-        //         return match($guard) {
-        //             'student' => redirect(RouteServiceProvider::HOME),
-        //             default => redirect(RouteServiceProvider::HOMEADMIN),
-        //         };
-        //     }
-        // }
-
-        // foreach ($guards as $guard) {
-        //     if (Auth::guard($guard)->check()) {
-        //         switch ($guard) {
-        //             case 'student':
-        //                 return redirect(RouteServiceProvider::HOME); // /dashboard
-        //             case 'user':
-        //                 return redirect(RouteServiceProvider::HOMEADMIN); // /panel/dashboardadmin
-        //         }
-        //     }
-        // }
-
-
         return $next($request);
     }
 }

@@ -24,7 +24,7 @@
 @endsection
 
 @section('content')
-    <div class="row" style="margin-top: 70px">
+    <div class="row" style="margin-top: 10px">
         <div class="col">
             @php
                 $messagesuccess = Session::get('success');
@@ -42,7 +42,7 @@
             @endif
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-1">
         <div class="col">
             @foreach ($permission as $item)
                 <ul class="listview image-listview">
