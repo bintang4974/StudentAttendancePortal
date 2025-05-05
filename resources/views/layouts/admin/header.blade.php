@@ -78,42 +78,67 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->is(['student', 'department']) ? 'show' : '' }}"
-                            href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
-                            aria-expanded="{{ request()->is(['student', 'department']) ? 'true' : '' }}">
-                            <span
-                                class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
-                                    <path d="M12 12l8 -4.5" />
-                                    <path d="M12 12l0 9" />
-                                    <path d="M12 12l-8 -4.5" />
-                                    <path d="M16 5.25l-8 4.5" />
-                                </svg>
-                            </span>
-                            <span class="nav-link-title">
-                                Data Master
-                            </span>
-                        </a>
-                        <div class="dropdown-menu {{ request()->is(['student', 'department']) ? 'show' : '' }}">
-                            <div class="dropdown-menu-columns">
-                                <div class="dropdown-menu-column">
-                                    <a class="dropdown-item {{ request()->is(['student']) ? 'active' : '' }}"
-                                        href="/student">
-                                        Data Mahasiswa
-                                    </a>
-                                    <a class="dropdown-item {{ request()->is(['department']) ? 'active' : '' }}"
-                                        href="/department">
-                                        Data Department
-                                    </a>
+                    @if (auth()->user()->role == 'mentor')
+                        <li class="nav-item {{ request()->is('student') ? 'active' : '' }}">
+                            <a class="nav-link" href="/student">
+                                <span
+                                    class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                                        <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                        <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Mahasiswa
+                                </span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (auth()->user()->role == 'user')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->is(['student', 'department']) ? 'show' : '' }}"
+                                href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                                role="button"
+                                aria-expanded="{{ request()->is(['student', 'department']) ? 'true' : '' }}">
+                                <span
+                                    class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+                                        <path d="M12 12l8 -4.5" />
+                                        <path d="M12 12l0 9" />
+                                        <path d="M12 12l-8 -4.5" />
+                                        <path d="M16 5.25l-8 4.5" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Data Master
+                                </span>
+                            </a>
+                            <div class="dropdown-menu {{ request()->is(['student', 'department']) ? 'show' : '' }}">
+                                <div class="dropdown-menu-columns">
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item {{ request()->is(['student']) ? 'active' : '' }}"
+                                            href="/student">
+                                            Data Mahasiswa
+                                        </a>
+                                        <a class="dropdown-item {{ request()->is(['department']) ? 'active' : '' }}"
+                                            href="/department">
+                                            Data Department
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
+                    @endif
                     <li class="nav-item {{ request()->is('attendance/monitoring') ? 'active' : '' }}">
                         <a class="nav-link" href="/attendance/monitoring">
                             <span

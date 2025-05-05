@@ -76,6 +76,19 @@
         </div>
     </div>
 
+    <!-- Tambahkan tombol ini di bawah Card Check In / Check Out -->
+    <div class="attendance-button submit-evidence">
+        <a href="{{ route('create.evidence') }}" class="btn btn-primary w-100">
+            <ion-icon name="document-attach-outline"></ion-icon>
+            Submit Evidence
+        </a>
+
+        <a href="{{ route('history.evidence') }}" class="btn btn-outline-primary w-100 mt-2">
+            <ion-icon name="time-outline"></ion-icon>
+            Evidence History
+        </a>
+    </div>
+
     <div class="tab-content mt-2" style="margin-bottom:100px;">
         <div class="tab-pane fade show active" id="home" role="tabpanel">
             <ul class="listview image-listview">
