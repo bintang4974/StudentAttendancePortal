@@ -31,11 +31,10 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $student_id = Auth::guard('student')->user()->id;
-        // alert($student_id);
-        // die;
         $date = date('Y-m-d');
         $time = date('H:i:s');
-        // menentukan latitude & longitude kantor
+
+        // Menentukan latitude & longitude kantor
         $latitudeKantor = -7.2565280548557825;
         $longitudeKantor = 112.7375558738815;
         $location = $request->lokasi;
@@ -46,15 +45,16 @@ class AttendanceController extends Controller
         $jarak = $this->distance($latitudeKantor, $longitudeKantor, $latitudeUser, $longitudeUser);
         $radius = round($jarak['meters']);
 
-        // query untuk mendapatkan absen pada hari ini
+        // Mengecek apakah sudah ada absen pada hari ini
         $check = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->count();
         if ($check > 0) {
             $ket = "out";
         } else {
             $ket = "in";
         }
+
         $image = $request->image;
-        $folderPath = 'public/uploads/absensi/';
+        $folderPath = 'uploads/absensi/';
         $formatName = $student_id . '-' . $date . "-" . $ket;
         $image_parts = explode(';base64', $image);
         $image_base64 = base64_decode($image_parts[1]);
@@ -64,7 +64,7 @@ class AttendanceController extends Controller
         if ($radius > 15000) {
             echo "error|maaf anda berada diluar radius";
         } else {
-            // pengkondisian jika user sudah absen
+            // Jika sudah absen, update waktu pulang
             if ($check > 0) {
                 $data_pulang = [
                     'time_out' => $time,
@@ -74,12 +74,13 @@ class AttendanceController extends Controller
                 $update = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->update($data_pulang);
                 if ($update) {
                     echo 'success|Terimakasih, hati-hati dijalan|out';
-                    Storage::put($file, $image_base64);
+                    // Simpan file di disk public
+                    Storage::disk('public')->put($file, $image_base64);
                 } else {
                     echo 'error|Gagal Absensi!|out';
                 }
             } else {
-                // pengkondisian ketika user belum absen
+                // Jika belum absen, simpan data absensi
                 $data = [
                     'student_id' => $student_id,
                     'date' => $date,
@@ -91,13 +92,86 @@ class AttendanceController extends Controller
                 $save = DB::table('attendances')->insert($data);
                 if ($save) {
                     echo 'success|Terimakasih, Selamat Bekerja|in';
-                    Storage::put($file, $image_base64);
+                    // Simpan file di disk public
+                    Storage::disk('public')->put($file, $image_base64);
                 } else {
                     echo 'error|Gagal Absensi!|in';
                 }
             }
         }
     }
+
+
+    // public function store(Request $request)
+    // {
+    //     $student_id = Auth::guard('student')->user()->id;
+    //     // alert($student_id);
+    //     // die;
+    //     $date = date('Y-m-d');
+    //     $time = date('H:i:s');
+    //     // menentukan latitude & longitude kantor
+    //     $latitudeKantor = -7.2565280548557825;
+    //     $longitudeKantor = 112.7375558738815;
+    //     $location = $request->lokasi;
+    //     $locationUser = explode(',', $location);
+    //     $latitudeUser = $locationUser[0];
+    //     $longitudeUser = $locationUser[1];
+
+    //     $jarak = $this->distance($latitudeKantor, $longitudeKantor, $latitudeUser, $longitudeUser);
+    //     $radius = round($jarak['meters']);
+
+    //     // query untuk mendapatkan absen pada hari ini
+    //     $check = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->count();
+    //     if ($check > 0) {
+    //         $ket = "out";
+    //     } else {
+    //         $ket = "in";
+    //     }
+    //     $image = $request->image;
+    //     $folderPath = 'public/uploads/absensi/';
+    //     $formatName = $student_id . '-' . $date . "-" . $ket;
+    //     $image_parts = explode(';base64', $image);
+    //     $image_base64 = base64_decode($image_parts[1]);
+    //     $fileName = $formatName . ".png";
+    //     $file = $folderPath . $fileName;
+
+    //     if ($radius > 15000) {
+    //         echo "error|maaf anda berada diluar radius";
+    //     } else {
+    //         // pengkondisian jika user sudah absen
+    //         if ($check > 0) {
+    //             $data_pulang = [
+    //                 'time_out' => $time,
+    //                 'photo_out' => $fileName,
+    //                 'location_out' => $location
+    //             ];
+    //             $update = DB::table('attendances')->where('date', $date)->where('student_id', $student_id)->update($data_pulang);
+    //             if ($update) {
+    //                 echo 'success|Terimakasih, hati-hati dijalan|out';
+    //                 Storage::put($file, $image_base64);
+    //             } else {
+    //                 echo 'error|Gagal Absensi!|out';
+    //             }
+    //         } else {
+    //             // pengkondisian ketika user belum absen
+    //             $data = [
+    //                 'student_id' => $student_id,
+    //                 'date' => $date,
+    //                 'time_in' => $time,
+    //                 'photo_in' => $fileName,
+    //                 'location_in' => $location
+    //             ];
+
+    //             $save = DB::table('attendances')->insert($data);
+    //             if ($save) {
+    //                 echo 'success|Terimakasih, Selamat Bekerja|in';
+    //                 Storage::put($file, $image_base64);
+    //             } else {
+    //                 echo 'error|Gagal Absensi!|in';
+    //             }
+    //         }
+    //     }
+    // }
 
     function distance($lat1, $lon1, $lat2, $lon2)
     {
@@ -283,7 +357,7 @@ class AttendanceController extends Controller
     public function getevidence(Request $request)
     {
         $user = auth()->guard('user')->user();
-        
+
         $month = $request->get('month', now()->format('Y-m'));
 
         // Cek role user
