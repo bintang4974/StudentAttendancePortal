@@ -12,31 +12,6 @@
             </a>
         </h1>
         <div class="navbar-nav flex-row order-md-last">
-
-            <div class="d-none d-md-flex">
-                <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode"
-                    data-bs-toggle="tooltip" data-bs-placement="bottom">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-                    </svg>
-                </a>
-                <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode"
-                    data-bs-toggle="tooltip" data-bs-placement="bottom">
-                    <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                        <path
-                            d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
-                    </svg>
-                </a>
-            </div>
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                     aria-label="Open user menu">
@@ -44,7 +19,7 @@
                         style="background-image: url({{ asset('tabler/static/avatars/000m.jpg') }})"></span>
                     <div class="d-none d-xl-block ps-2">
                         <div>{{ Auth::guard('user')->user()->name }}</div>
-                        <div class="mt-1 small text-secondary">Administrator</div>
+                        <div class="mt-1 small text-secondary">{{ Auth::guard('user')->user()->role }}</div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -108,9 +83,9 @@
                                 aria-expanded="{{ request()->is(['student', 'department']) ? 'true' : '' }}">
                                 <span
                                     class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
                                         <path d="M12 12l8 -4.5" />
@@ -189,43 +164,91 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ request()->is(['attendance/report', 'attendance/recap']) ? 'show' : '' }}"
-                            href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside"
-                            role="button"
-                            aria-expanded="{{ request()->is(['attendance/report', 'attendance/recap']) ? 'true' : '' }}">
+                    <li class="nav-item {{ request()->is('evidence') ? 'active' : '' }}">
+                        <a class="nav-link" href="/evidence">
                             <span
-                                class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-book-2">
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-up">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" />
-                                    <path d="M19 16h-12a2 2 0 0 0 -2 2" />
-                                    <path d="M9 8h6" />
+                                    <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+                                    <path d="M16 3v4" />
+                                    <path d="M8 3v4" />
+                                    <path d="M4 11h16" />
+                                    <path d="M19 22v-6" />
+                                    <path d="M22 19l-3 -3l-3 3" />
                                 </svg>
                             </span>
                             <span class="nav-link-title">
-                                Report
+                                Evidence
                             </span>
                         </a>
-                        <div
-                            class="dropdown-menu {{ request()->is(['attendance/report', 'attendance/recap']) ? 'show' : '' }}">
-                            <div class="dropdown-menu-columns">
-                                <div class="dropdown-menu-column">
-                                    <a class="dropdown-item {{ request()->is(['attendance/report']) ? 'active' : '' }}"
-                                        href="/attendance/report">
-                                        Report Presensi
-                                    </a>
-                                    <a class="dropdown-item {{ request()->is(['attendance/recap']) ? 'active' : '' }}"
-                                        href="/attendance/recap">
-                                        Recap Presensi
-                                    </a>
+                    </li>
+                    @if (auth()->user()->role == 'mentor')
+                        <li class="nav-item {{ request()->is('attendance/report') ? 'active' : '' }}">
+                            <a class="nav-link" href="/attendance/report">
+                                <span
+                                    class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-clipboard-text">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path
+                                            d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" />
+                                        <path
+                                            d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z" />
+                                        <path d="M9 12h6" />
+                                        <path d="M9 16h6" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Report Presensi
+                                </span>
+                            </a>
+                        </li>
+                    @endif
+                    @if (auth()->user()->role == 'user')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->is(['attendance/report', 'attendance/recap']) ? 'show' : '' }}"
+                                href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                                role="button"
+                                aria-expanded="{{ request()->is(['attendance/report', 'attendance/recap']) ? 'true' : '' }}">
+                                <span
+                                    class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-book-2">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M19 4v16h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12z" />
+                                        <path d="M19 16h-12a2 2 0 0 0 -2 2" />
+                                        <path d="M9 8h6" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Report
+                                </span>
+                            </a>
+                            <div
+                                class="dropdown-menu {{ request()->is(['attendance/report', 'attendance/recap']) ? 'show' : '' }}">
+                                <div class="dropdown-menu-columns">
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item {{ request()->is(['attendance/report']) ? 'active' : '' }}"
+                                            href="/attendance/report">
+                                            Report Presensi
+                                        </a>
+                                        <a class="dropdown-item {{ request()->is(['attendance/recap']) ? 'active' : '' }}"
+                                            href="/attendance/recap">
+                                            Recap Presensi
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>

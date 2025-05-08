@@ -69,9 +69,9 @@
                         </div>
                     </div>
 
-                    <div class="form-links mt-2">
+                    {{-- <div class="form-links mt-2">
                         <div><a href="page-forgot-password.html" class="text-muted">Forgot Password?</a></div>
-                    </div>
+                    </div> --}}
 
                     <div class="form-button-group">
                         <button type="submit" class="btn btn-primary btn-block btn-lg"><ion-icon name="enter-outline"></ion-icon>Log in</button>
