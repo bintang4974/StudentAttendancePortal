@@ -94,4 +94,5 @@ Route::middleware(['auth:user'])->group(function () {
 
     // evidence
     Route::get('evidence', [AttendanceController::class, 'getevidence'])->name('getevidence');
+    Route::post('/attendance/import', [AttendanceController::class, 'import'])->name('attendance.import');
 });
