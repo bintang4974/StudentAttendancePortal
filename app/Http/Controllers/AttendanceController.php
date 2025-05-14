@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\AttendanceImport;
 use App\Models\Attendance;
 use App\Models\Evidence;
 use App\Models\Mentor;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 use function Laravel\Prompts\alert;
 use function Laravel\Prompts\select;
@@ -438,6 +440,19 @@ class AttendanceController extends Controller
             ->join('students', 'attendances.student_id', '=', 'students.id')
             ->first();
         return view('attendance.showmap', compact('attendance'));
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        // dd($request->all());
+
+        Excel::import(new AttendanceImport, $request->file('file'));
+
+        return back()->with('success', 'Data presensi berhasil diimport.');
     }
 
     public function report()
