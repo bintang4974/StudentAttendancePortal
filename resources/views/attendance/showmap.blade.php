@@ -4,6 +4,12 @@
     }
 </style>
 
+<table class="table table-striped">
+    <tr>
+        <td>nama :</td>
+        <td>{{ $attendance->student_name }}</td>
+    </tr>
+</table>
 <div id="map"></div>
 {{ $attendance->location_in }}
 <script>

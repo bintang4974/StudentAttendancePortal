@@ -10,15 +10,6 @@
             background-color: #0f3a7e !important;
         }
     </style>
-    {{-- <div class="appHeader bg-primary text-light">
-        <div class="left">
-            <a href="javascript:;" class="headerButton goBack">
-                <ion-icon name="chevron-back-outline"></ion-icon>
-            </a>
-        </div>
-        <div class="pageTitle">Form Permission</div>
-        <div class="right"></div>
-    </div> --}}
     <div class="header-large-title">
         <div class="row">
             <div class="col align-self-center">

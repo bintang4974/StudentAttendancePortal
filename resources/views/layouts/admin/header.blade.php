@@ -109,6 +109,14 @@
                                             href="/department">
                                             Data Department
                                         </a>
+                                        <a class="dropdown-item {{ request()->is(['mentor']) ? 'active' : '' }}"
+                                            href="/mentor">
+                                            Data Mentor
+                                        </a>
+                                        {{-- <a class="dropdown-item {{ request()->is(['user']) ? 'active' : '' }}"
+                                            href="/user">
+                                            Data User
+                                        </a> --}}
                                     </div>
                                 </div>
                             </div>

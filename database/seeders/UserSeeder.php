@@ -15,27 +15,33 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
+            // [
+            //     'name' => 'Bintank',
+            //     'email' => 'bintank@gmail.com',
+            //     'password' => Hash::make('12345678'),
+            //     'role' => 'user'
+            // ],
+            // [
+            //     'name' => 'Daniel',
+            //     'email' => 'daniel@gmail.com',
+            //     'password' => Hash::make('12345678'),
+            //     'role' => 'mentor'
+            // ],
+            // [
+            //     'name' => 'Ratih',
+            //     'email' => 'ratih@gmail.com',
+            //     'password' => Hash::make('12345678'),
+            //     'role' => 'mentor'
+            // ],
+            // [
+            //     'name' => 'Mega',
+            //     'email' => 'mega@gmail.com',
+            //     'password' => Hash::make('12345678'),
+            //     'role' => 'mentor'
+            // ],
             [
-                'name' => 'Bintank',
-                'email' => 'bintank@gmail.com',
-                'password' => Hash::make('12345678'),
-                'role' => 'user'
-            ],
-            [
-                'name' => 'Daniel',
-                'email' => 'daniel@gmail.com',
-                'password' => Hash::make('12345678'),
-                'role' => 'mentor'
-            ],
-            [
-                'name' => 'Ratih',
-                'email' => 'ratih@gmail.com',
-                'password' => Hash::make('12345678'),
-                'role' => 'mentor'
-            ],
-            [
-                'name' => 'Mega',
-                'email' => 'mega@gmail.com',
+                'name' => 'Gellang',
+                'email' => 'gellang@gmail.com',
                 'password' => Hash::make('12345678'),
                 'role' => 'mentor'
             ],

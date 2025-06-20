@@ -59,7 +59,7 @@
                                             <div class="col-10">
                                                 <div class="form-group">
                                                     <input type="text" name="name_dept" id="name_dept"
-                                                        class="form-control" placeholder="Nama Karyawan"
+                                                        class="form-control" placeholder="Nama"
                                                         value="{{ Request('name_dept') }}">
                                                 </div>
                                             </div>

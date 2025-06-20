@@ -128,7 +128,7 @@
                                             <img src="{{ url($path) }}" class="avatar">
                                         @endif
                                     </td>
-                                    <td>{{ $item->name_department }}</td>
+                                    <td>{{ $item->department->name }}</td>
                                     <td>{{ $item->position->name }}</td>
                                     <td>{{ $item->mentor->name }}</td>
                                     <td>

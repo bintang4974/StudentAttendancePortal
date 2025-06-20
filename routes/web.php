@@ -4,6 +4,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\MentorController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -79,6 +80,13 @@ Route::middleware(['auth:user'])->group(function () {
     Route::post('/department/edit', [DepartmentController::class, 'edit']);
     Route::post('/department/{id}/update', [DepartmentController::class, 'update']);
     Route::post('/department/{id}/delete', [DepartmentController::class, 'delete']);
+
+    // mentor
+    Route::get('/mentor', [MentorController::class, 'index']);
+    Route::post('/mentor/store', [MentorController::class, 'store']);
+    Route::post('/mentor/edit', [MentorController::class, 'edit']);
+    Route::post('/mentor/{id}/update', [MentorController::class, 'update']);
+    Route::post('/mentor/{id}/delete', [MentorController::class, 'delete']);
 
     // Monitoring Attendance
     Route::get('/attendance/monitoring', [AttendanceController::class, 'monitoring']);

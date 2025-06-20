@@ -1,15 +1,5 @@
 @extends('layouts.master2')
 @section('header')
-    <!-- App Header -->
-    {{-- <div class="appHeader bg-primary text-light">
-        <div class="left">
-            <a href="javascript:;" class="headerButton goBack">
-                <ion-icon name="chevron-back-outline"></ion-icon>
-            </a>
-        </div>
-        <div class="pageTitle">Attendance</div>
-        <div class="right"></div>
-    </div> --}}
     <!-- * App Header -->
     <div class="header-large-title">
         <div class="row">
@@ -53,8 +43,6 @@
     <div class="row">
         <div class="col">
             @if ($check > 0)
-                {{-- <input type="hidden" id="location">
-                <input type="hidden" id="fakeimage" value="{{ asset('images/fake-selfie.png') }}"> --}}
                 <button id="takeattendance" class="btn btn-danger btn-block mt-2">
                     <ion-icon name="camera-outline"></ion-icon>
                     Absen Pulang
@@ -153,121 +141,3 @@
     </script>
 @endpush
 
-{{-- @push('myscript')
-    <script>
-        let image = "";
-
-        @if (app()->environment('testing'))
-            // Jika environment testing, pakai gambar dan lokasi dummy
-            $('#location').val("-7.250445,112.768845");
-            image = $('#fakeimage').val();
-
-            $('#takeattendance').click(function(e) {
-                var loc = $('#location').val();
-
-                console.log('TEST MODE: image:', image);
-                console.log('TEST MODE: loc:', loc);
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/attendance/store',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        image: image,
-                        lokasi: loc
-                    },
-                    cache: false,
-                    success: function(res) {
-                        var status = res.split("|");
-                        if (status[0] == "success") {
-                            Swal.fire({
-                                title: 'Success!',
-                                text: status[1],
-                                icon: 'success',
-                                confirmButtonText: 'OK'
-                            })
-                            setTimeout("location.href='/dashboard'", 3000);
-                        } else {
-                            Swal.fire({
-                                title: 'Error!',
-                                text: status[1],
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            })
-                        }
-                    }
-                });
-            });
-        @else
-            // Normal mode: gunakan webcam dan lokasi GPS
-            Webcam.set({
-                height: 400,
-                width: 640,
-                image_format: 'jpeg',
-                jpeg_quality: 80
-            });
-
-            Webcam.attach('.webcam-capture');
-
-            const x = document.getElementById("location");
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-            } else {
-                x.innerHTML = "Geolocation is not supported by this browser.";
-            }
-
-            function showPosition(position) {
-                x.value = position.coords.latitude + "," + position.coords.longitude;
-                var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
-                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19
-                }).addTo(map);
-                var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-                var circle = L.circle([-7.2565280548557825, 112.7375558738815], {
-                    color: 'red',
-                    fillColor: '#f03',
-                    fillOpacity: 0.5,
-                    radius: 15000
-                }).addTo(map);
-            }
-
-            $('#takeattendance').click(function(e) {
-                Webcam.snap(function(uri) {
-                    image = uri;
-                    var loc = $('#location').val();
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/attendance/store',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            image: image,
-                            lokasi: loc
-                        },
-                        cache: false,
-                        success: function(res) {
-                            var status = res.split("|");
-                            if (status[0] == "success") {
-                                Swal.fire({
-                                    title: 'Success!',
-                                    text: status[1],
-                                    icon: 'success',
-                                    confirmButtonText: 'OK'
-                                })
-                                setTimeout("location.href='/dashboard'", 3000);
-                            } else {
-                                Swal.fire({
-                                    title: 'Error!',
-                                    text: status[1],
-                                    icon: 'error',
-                                    confirmButtonText: 'OK'
-                                })
-                            }
-                        }
-                    });
-                });
-            });
-        @endif
-    </script>
-@endpush --}}
