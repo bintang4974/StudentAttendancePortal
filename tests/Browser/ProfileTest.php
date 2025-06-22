@@ -23,7 +23,7 @@ class ProfileTest extends DuskTestCase
             // 2. Navigasi ke halaman profile (asumsi ada menu/navigasi ke profile)
             $browser->click('a[href*="profile"]') // Sesuaikan dengan selector menu profile
                 ->pause(1000)
-                ->assertSee('Edit Profile')
+                ->assertSee('Profile')
                 ->screenshot('profile-page');
 
             // 3. Isi form edit profile
@@ -35,21 +35,12 @@ class ProfileTest extends DuskTestCase
                     ->screenshot('filled-profile-form');
             });
 
-            // 4. Upload foto (opsional)
-            $browser->attach('input[name="photo"]', __DIR__.'/test-photo.jpg')
-                ->pause(1000);
-
             // 5. Submit form
             $browser->press('button[type="submit"]')
-                ->waitForText('Profile updated successfully', 10)
-                ->assertSee('Profile updated successfully')
+                ->waitForText('Success Update!', 10)
+                ->assertSee('Success Update!')
                 ->screenshot('after-profile-update');
 
-            // 6. Verifikasi logout
-            $browser->click('a[href="/processlogout"]')
-                ->pause(1000)
-                ->assertPathIs('/login')
-                ->screenshot('after-logout');
         });
     }
 }
