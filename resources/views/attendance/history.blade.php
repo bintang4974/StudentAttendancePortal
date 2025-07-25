@@ -15,7 +15,7 @@
 @endsection
 
 @section('content')
-    <div class="row" style="margin-top: 20px">
+    {{-- <div class="row" style="margin-top: 20px">
         <div class="col">
             <div class="row">
                 <div class="col-12">
@@ -62,7 +62,94 @@
     </div>
     <div class="row">
         <div class="col" id="showhistory"></div>
-    </div>
+    </div> --}}
+
+    <form method="GET" action="{{ route('attendance.history') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <select name="month" class="form-control">
+                    @foreach (range(1, 12) as $m)
+                        <option value="{{ $m }}" {{ $m == $month ? 'selected' : '' }}>
+                            {{ DateTime::createFromFormat('!m', $m)->format('F') }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="year" class="form-control">
+                    @foreach (range(date('Y') - 2, date('Y')) as $y)
+                        <option value="{{ $y }}" {{ $y == $year ? 'selected' : '' }}>{{ $y }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    {{-- <p>Total Hadir: <strong>{{ $hadir }}</strong></p>
+    <p>Total Tidak Hadir: <strong>{{ $tidakHadir }}</strong></p>
+    <p>Persentase Kehadiran: <strong>{{ $persentase }}%</strong></p>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>Waktu Masuk</th>
+                <th>Waktu Keluar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($attendances as $attendance)
+                <tr>
+                    <td>{{ $attendance->date }}</td>
+                    <td>{{ $attendance->time_in ?? '-' }}</td>
+                    <td>{{ $attendance->time_out ?? '-' }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table> --}}
+
+    <p>Total Hadir: <strong>{{ $hadir }}</strong></p>
+    <p>Total Izin: <strong>{{ $izin }}</strong></p>
+    <p>Total Sakit: <strong>{{ $sakit }}</strong></p>
+    <p>Total Tidak Hadir: <strong>{{ $tidakHadir }}</strong></p>
+    <p>Persentase Kehadiran: <strong>{{ $persentase }}%</strong></p>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>Status</th>
+                <th>Keterangan</th>
+                <th>Waktu Masuk</th>
+                <th>Waktu Keluar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($history as $row)
+                <tr>
+                    <td>{{ \Carbon\Carbon::parse($row['date'])->format('d-m-Y') }}</td>
+                    <td>
+                        @if ($row['type'] === 'Hadir')
+                            <span class="badge bg-success">Hadir</span>
+                        @elseif ($row['type'] === 'Izin')
+                            <span class="badge bg-warning">Izin</span>
+                        @elseif ($row['type'] === 'Sakit')
+                            <span class="badge bg-warning">Sakit</span>
+                        @else
+                            <span class="badge bg-danger">Tidak Hadir</span>
+                        @endif
+                    </td>
+                    <td>{{ $row['description'] ?? '-' }}</td>
+                    <td>{{ $row['time_in'] ?? '-' }}</td>
+                    <td>{{ $row['time_out'] ?? '-' }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection
 
 @push('myscript')
