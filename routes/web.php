@@ -48,8 +48,10 @@ Route::middleware(['auth:student'])->group(function () {
     Route::post('/attendance/{id}/updateprofile', [AttendanceController::class, 'updateprofile']);
 
     // history
-    Route::get('/attendance/history', [AttendanceController::class, 'history']);
-    Route::post('/gethistory', [AttendanceController::class, 'gethistory']);
+    // Route::get('/attendance/history', [AttendanceController::class, 'history']);
+    // Route::post('/gethistory', [AttendanceController::class, 'gethistory']);
+    Route::get('/attendance/history', [AttendanceController::class, 'history'])->name('attendance.history');
+
 
     // permission/izin
     Route::get('/attendance/permission', [AttendanceController::class, 'permission']);

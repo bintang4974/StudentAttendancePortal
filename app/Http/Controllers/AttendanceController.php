@@ -241,28 +241,103 @@ class AttendanceController extends Controller
         }
     }
 
-    public function history()
+    // use App\Models\Permission;
+    // use Carbon\Carbon;
+
+    public function history(Request $request)
     {
-        $namemonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        return view('attendance.history', compact('namemonth'));
+        $studentId = auth()->guard('student')->id();
+        $month = $request->input('month', date('m'));
+        $year = $request->input('year', date('Y'));
+
+        // Ambil seluruh hari dalam bulan itu
+        $totalDays = Carbon::createFromDate($year, $month)->daysInMonth;
+
+        // Ambil semua tanggal di bulan dan tahun tertentu
+        $datesInMonth = collect(range(1, $totalDays))->map(function ($day) use ($year, $month) {
+            return Carbon::createFromDate($year, $month, $day)->format('Y-m-d');
+        });
+
+        // Ambil data presensi
+        $attendances = Attendance::where('student_id', $studentId)
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->get()
+            ->keyBy('date');
+
+        // Ambil data perizinan
+        $permissions = Permission::where('student_id', $studentId)
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->get()
+            ->keyBy('date');
+
+        // Gabungkan kehadiran dan izin
+        $history = $datesInMonth->map(function ($date) use ($attendances, $permissions) {
+            if (isset($attendances[$date])) {
+                return [
+                    'date' => $date,
+                    'type' => 'Hadir',
+                    'time_in' => $attendances[$date]->time_in,
+                    'time_out' => $attendances[$date]->time_out
+                ];
+            } elseif (isset($permissions[$date])) {
+                return [
+                    'date' => $date,
+                    'type' => $permissions[$date]->status == 's' ? 'Sakit' : 'Izin',
+                    'description' => $permissions[$date]->description,
+                    'approved' => $permissions[$date]->status_approved,
+                ];
+            } else {
+                return [
+                    'date' => $date,
+                    'type' => 'Tidak Hadir'
+                ];
+            }
+        });
+
+        $hadir = $history->where('type', 'Hadir')->count();
+        $izin = $history->where('type', 'Izin')->count();
+        $sakit = $history->where('type', 'Sakit')->count();
+        $tidakHadir = $history->where('type', 'Tidak Hadir')->count();
+
+        $persentase = $totalDays > 0 ? round(($hadir / $totalDays) * 100, 2) : 0;
+
+        return view('attendance.history', compact(
+            'history',
+            'month',
+            'year',
+            'hadir',
+            'izin',
+            'sakit',
+            'tidakHadir',
+            'persentase'
+        ));
     }
 
-    public function gethistory(Request $request)
-    {
-        $month = $request->month;
-        $year = $request->year;
-        $student_id = Auth::guard('student')->user()->id;
 
-        // mengambil history user berdasarkan bulan dan tahun
-        $history = DB::table('attendances')
-            ->whereRaw('MONTH(date)="' . $month . '"')
-            ->whereRaw('YEAR(date)="' . $year . '"')
-            ->where('student_id', $student_id)
-            ->orderBy('date')
-            ->get();
+    // public function history()
+    // {
+    //     $namemonth = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    //     return view('attendance.history', compact('namemonth'));
+    // }
 
-        return view('attendance.gethistory', compact('history'));
-    }
+    // public function gethistory(Request $request)
+    // {
+    //     $month = $request->month;
+    //     $year = $request->year;
+    //     $student_id = Auth::guard('student')->user()->id;
+
+    //     // mengambil history user berdasarkan bulan dan tahun
+    //     $history = DB::table('attendances')
+    //         ->whereRaw('MONTH(date)="' . $month . '"')
+    //         ->whereRaw('YEAR(date)="' . $year . '"')
+    //         ->where('student_id', $student_id)
+    //         ->orderBy('date')
+    //         ->get();
+
+    //     return view('attendance.gethistory', compact('history'));
+    // }
 
     public function permission()
     {
@@ -292,20 +367,20 @@ class AttendanceController extends Controller
             'description' => $description,
             'status_approved' => $status_approved,
         ];
-        $dataAtt = [
-            'student_id' => $student_id,
-            'date' => $request->date,
-            'time_in' => $time,
-            'time_out' => null,
-            'photo_in' => null,
-            'photo_out' => null,
-            'location_in' => null,
-            'location_out' => null,
-        ];
+        // $dataAtt = [
+        //     'student_id' => $student_id,
+        //     'date' => $request->date,
+        //     'time_in' => $time,
+        //     'time_out' => null,
+        //     'photo_in' => null,
+        //     'photo_out' => null,
+        //     'location_in' => null,
+        //     'location_out' => null,
+        // ];
 
-        $saveAtt = DB::table('attendances')->insert($dataAtt);
+        // $saveAtt = DB::table('attendances')->insert($dataAtt);
         $save = DB::table('permissions')->insert($data);
-        if ($save && $saveAtt) {
+        if ($save ) {
             return redirect('/attendance/permission')->with(['success' => 'Data Berhasil Disimpan!']);
         } else {
             return redirect('/attendance/permission')->with(['error' => 'Data Gagal Disimpan!']);
